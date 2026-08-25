@@ -1,0 +1,21 @@
+# Local environment files and credentials
+.env
+.env.*
+!.env.example
+backend/.env
+
+# Dependencies
+frontend/node_modules/
+backend/vendor/
+
+# Build and test output
+frontend/dist/
+backend/public/build/
+coverage/
+
+# Local tooling and operating-system files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.log
