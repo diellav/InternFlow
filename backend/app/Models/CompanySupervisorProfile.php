@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Shared\Enums\VerificationStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -23,7 +24,10 @@ class CompanySupervisorProfile extends Model
 
     protected function casts(): array
     {
-        return ['reviewed_at' => 'datetime'];
+        return [
+            'verification_status' => VerificationStatus::class,
+            'reviewed_at' => 'datetime',
+        ];
     }
 
     public function user(): BelongsTo

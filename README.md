@@ -39,6 +39,13 @@ Backend tests are configured for a separate PostgreSQL database named
 `internflow_testing`. Create it and provide PostgreSQL credentials locally before
 running tests that use database migrations.
 
+## Authentication foundation
+
+The backend uses Laravel Sanctum's stateful, cookie-based SPA authentication.
+Configure `FRONTEND_URL` and `SANCTUM_STATEFUL_DOMAINS` for the React origin.
+Authentication endpoints are intentionally deferred to Module 1 Part 1B and
+later parts.
+
 ## Database schema notes
 
 Workflow statuses, task priorities, feedback decisions, internship date order,

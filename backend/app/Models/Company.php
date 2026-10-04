@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Shared\Enums\VerificationStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -15,7 +16,11 @@ class Company extends Model
 
     protected function casts(): array
     {
-        return ['is_active' => 'boolean', 'verified_at' => 'datetime'];
+        return [
+            'is_active' => 'boolean',
+            'verification_status' => VerificationStatus::class,
+            'verified_at' => 'datetime',
+        ];
     }
 
     public function verifier(): BelongsTo

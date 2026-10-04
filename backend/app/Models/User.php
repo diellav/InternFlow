@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use App\Shared\Enums\UserRole;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -99,5 +100,12 @@ class User extends Authenticatable
     public function auditLogs(): HasMany
     {
         return $this->hasMany(AuditLog::class);
+    }
+
+    public function hasRole(UserRole ...$roles): bool
+    {
+        $userRole = UserRole::tryFrom((string) $this->role?->name);
+
+        return $userRole !== null && in_array($userRole, $roles, true);
     }
 }
