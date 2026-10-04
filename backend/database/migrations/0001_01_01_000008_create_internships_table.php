@@ -13,13 +13,13 @@ return new class extends Migration
             $table->id();
             $table->foreignId('student_id')->constrained('student_profiles', 'user_id')->restrictOnDelete()->cascadeOnUpdate();
             $table->foreignId('company_id')->constrained()->restrictOnDelete()->cascadeOnUpdate();
-            $table->foreignId('company_supervisor_id')->constrained('company_supervisor_profiles', 'user_id')->restrictOnDelete()->cascadeOnUpdate();
-            $table->foreignId('coordinator_id')->constrained('academic_coordinator_profiles', 'user_id')->restrictOnDelete()->cascadeOnUpdate();
+            $table->foreignId('company_supervisor_id')->nullable()->constrained('company_supervisor_profiles', 'user_id')->restrictOnDelete()->cascadeOnUpdate();
+            $table->foreignId('coordinator_id')->nullable()->constrained('academic_coordinator_profiles', 'user_id')->restrictOnDelete()->cascadeOnUpdate();
             $table->string('position_title');
             $table->text('description')->nullable();
             $table->date('start_date');
             $table->date('end_date');
-            $table->string('status');
+            $table->string('status')->default('DRAFT');
             $table->timestampTz('submitted_at')->nullable();
             $table->timestampTz('approved_at')->nullable();
             $table->text('decision_comment')->nullable();

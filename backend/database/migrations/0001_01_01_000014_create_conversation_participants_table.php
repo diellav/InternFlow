@@ -12,6 +12,7 @@ return new class extends Migration
             $table->foreignId('conversation_id')->constrained()->restrictOnDelete()->cascadeOnUpdate();
             $table->foreignId('user_id')->constrained()->restrictOnDelete()->cascadeOnUpdate();
             $table->timestampTz('joined_at')->useCurrent();
+            $table->timestampTz('last_read_at')->nullable();
             $table->primary(['conversation_id', 'user_id']);
             $table->index('user_id');
         });

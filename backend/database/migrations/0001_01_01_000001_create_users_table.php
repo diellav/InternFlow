@@ -16,7 +16,6 @@ return new class extends Migration
             $table->foreignId('role_id')->constrained()->restrictOnDelete()->cascadeOnUpdate();
             $table->string('first_name');
             $table->string('last_name');
-            $table->date('date_of_birth')->nullable();
             $table->string('email')->unique();
             $table->string('password');
             $table->string('phone')->nullable();
@@ -46,8 +45,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
-        Schema::dropIfExists('password_reset_tokens');
         Schema::dropIfExists('sessions');
+        Schema::dropIfExists('password_reset_tokens');
+        Schema::dropIfExists('users');
     }
 };

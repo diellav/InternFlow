@@ -14,7 +14,6 @@ return new class extends Migration
             $table->foreignId('sender_id')->constrained('users')->restrictOnDelete()->cascadeOnUpdate();
             $table->text('content');
             $table->timestampTz('sent_at')->useCurrent();
-            $table->timestampTz('read_at')->nullable();
             $table->index(['conversation_id', 'sent_at']);
             $table->index('sender_id');
         });

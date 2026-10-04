@@ -17,7 +17,7 @@ return new class extends Migration
             $table->text('description');
             $table->string('priority');
             $table->date('due_date')->nullable();
-            $table->string('status');
+            $table->string('status')->default('ASSIGNED');
             $table->unsignedSmallInteger('progress_percent')->nullable();
             $table->timestampsTz();
             $table->index('internship_id');
