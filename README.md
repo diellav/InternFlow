@@ -43,8 +43,11 @@ running tests that use database migrations.
 
 The backend uses Laravel Sanctum's stateful, cookie-based SPA authentication.
 Configure `FRONTEND_URL` and `SANCTUM_STATEFUL_DOMAINS` for the React origin.
-Authentication endpoints are intentionally deferred to Module 1 Part 1B and
-later parts.
+The local frontend and backend defaults are `http://localhost:5173` and
+`http://localhost:8000`. Module 1 provides cookie/session login and logout,
+current-user restoration, student registration, and company-supervisor
+registration with existing/new company onboarding. Run frontend checks with
+`npm run test`, `npm run lint`, and `npm run build`.
 
 ## Database schema notes
 

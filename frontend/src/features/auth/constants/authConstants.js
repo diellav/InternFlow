@@ -1,0 +1,17 @@
+export const USER_ROLES = Object.freeze({
+  STUDENT: 'STUDENT',
+  COMPANY_SUPERVISOR: 'COMPANY_SUPERVISOR',
+  ACADEMIC_COORDINATOR: 'ACADEMIC_COORDINATOR',
+  ADMIN: 'ADMIN',
+})
+
+export const VERIFICATION_STATUSES = Object.freeze({
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+})
+
+export const COMPANY_REGISTRATION_MODES = Object.freeze({
+  EXISTING: 'existing',
+  NEW: 'new',
+})

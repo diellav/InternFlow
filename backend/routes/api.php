@@ -12,6 +12,10 @@ Route::post('/auth/register/supervisor', [RegistrationController::class, 'superv
     ->middleware('throttle:20,1')
     ->name('auth.register.supervisor');
 
+Route::get('/auth/register/supervisor/companies', [RegistrationController::class, 'companies'])
+    ->middleware('throttle:60,1')
+    ->name('auth.register.supervisor.companies');
+
 Route::post('/auth/login', [AuthController::class, 'login'])
     ->middleware('throttle:login')
     ->name('auth.login');
