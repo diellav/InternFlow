@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { USER_ROLES, VERIFICATION_STATUSES } from '../constants/authConstants'
 import { useAuth } from '../hooks/useAuth'
 import '../styles/auth.css'
@@ -73,6 +73,8 @@ export function SessionPage() {
             {logoutError}
           </div>
         ) : null}
+
+        <Link className="primary-button session-profile-link" to="/profile">Profili im</Link>
 
         <button
           className="secondary-button"

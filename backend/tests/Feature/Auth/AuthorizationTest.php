@@ -64,6 +64,39 @@ class AuthorizationTest extends TestCase
             ->assertForbidden();
     }
 
+    public function test_guest_is_denied_on_admin_route(): void
+    {
+        $this->getJson('/_test/authorization/admin')->assertUnauthorized();
+    }
+
+    #[DataProvider('nonAdminRoleProvider')]
+    public function test_other_non_admin_roles_are_denied_on_admin_route(UserRole $role): void
+    {
+        $this->actingAs($this->user($role))
+            ->getJson('/_test/authorization/admin')
+            ->assertForbidden()
+            ->assertJsonPath('message', 'This action is forbidden.');
+    }
+
+    public static function nonAdminRoleProvider(): array
+    {
+        return [
+            'supervisor' => [UserRole::COMPANY_SUPERVISOR],
+            'coordinator' => [UserRole::ACADEMIC_COORDINATOR],
+        ];
+    }
+
+    public function test_inactive_admin_is_denied_on_admin_route(): void
+    {
+        $admin = $this->user(UserRole::ADMIN);
+        $admin->update(['is_active' => false]);
+
+        $this->actingAs($admin)
+            ->getJson('/_test/authorization/admin')
+            ->assertForbidden()
+            ->assertJsonPath('message', 'Account is inactive.');
+    }
+
     public function test_admin_is_allowed_on_admin_route(): void
     {
         $this->actingAs($this->user(UserRole::ADMIN))

@@ -82,9 +82,9 @@ export function LoginPage() {
     setIsSubmitting(true)
 
     try {
-      await login({ email: values.email.trim(), password: values.password })
+      const user = await login({ email: values.email.trim(), password: values.password })
       const requestedPath = location.state?.from?.pathname
-      navigate(requestedPath && requestedPath !== '/login' ? requestedPath : '/session', {
+      navigate(requestedPath && requestedPath !== '/login' ? requestedPath : user.role === 'ADMIN' ? '/admin' : '/session', {
         replace: true,
       })
     } catch (error) {

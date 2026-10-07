@@ -1,6 +1,13 @@
 import { createBrowserRouter } from 'react-router-dom'
 import { PublicOnlyRoute } from '../../features/auth/guards/PublicOnlyRoute'
 import { RequireAuth } from '../../features/auth/guards/RequireAuth'
+import { RequireRole } from '../../features/auth/guards/RequireRole'
+import { AdminLayout } from '../layouts/AdminLayout'
+import { AdminHomePage } from '../../features/users/pages/AdminHomePage'
+import { UsersPage } from '../../features/users/pages/UsersPage'
+import { UserDetailsPage } from '../../features/users/pages/UserDetailsPage'
+import { CoordinatorFormPage } from '../../features/users/pages/CoordinatorFormPage'
+import { ProfileLayout, ProfilePage } from '../../features/users/pages/ProfilePage'
 import { RootRedirect } from '../../features/auth/components/RootRedirect'
 import { LoginPage } from '../../features/auth/pages/LoginPage'
 import { StudentRegistrationPage } from '../../features/auth/pages/StudentRegistrationPage'
@@ -39,6 +46,24 @@ export const router = createBrowserRouter([
           {
             path: 'session',
             element: <SessionPage />,
+          },
+          {
+            element: <ProfileLayout />,
+            children: [{ path: 'profile', element: <ProfilePage /> }],
+          },
+          {
+            element: <RequireRole allowedRoles={['ADMIN']} />,
+            children: [{
+              path: 'admin',
+              element: <AdminLayout />,
+              children: [
+                { index: true, element: <AdminHomePage /> },
+                { path: 'users', element: <UsersPage /> },
+                { path: 'users/:id', element: <UserDetailsPage /> },
+                { path: 'academic-coordinators/new', element: <CoordinatorFormPage /> },
+                { path: 'academic-coordinators/:id/edit', element: <CoordinatorFormPage /> },
+              ],
+            }],
           },
         ],
       },
