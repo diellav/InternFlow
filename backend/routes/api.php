@@ -2,6 +2,9 @@
 
 use App\Modules\Auth\Controllers\AuthController;
 use App\Modules\Auth\Controllers\RegistrationController;
+use App\Modules\Company\Controllers\AdminCompanyController;
+use App\Modules\Company\Controllers\AdminSupervisorController;
+use App\Modules\Company\Controllers\VerificationApplicationController;
 use App\Modules\User\Controllers\AcademicCoordinatorController;
 use App\Modules\User\Controllers\AdminUserController;
 use App\Modules\User\Controllers\ProfileController;
@@ -36,7 +39,21 @@ Route::middleware(['auth:sanctum', 'active'])->group(function (): void {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 });
 
+Route::prefix('supervisor/verification-application')->middleware(['auth:sanctum', 'active', 'role:COMPANY_SUPERVISOR'])->group(function (): void {
+    Route::get('/', [VerificationApplicationController::class, 'show'])->name('supervisor.application.show');
+    Route::patch('/', [VerificationApplicationController::class, 'update'])->name('supervisor.application.update');
+    Route::post('/resubmit', [VerificationApplicationController::class, 'resubmit'])->name('supervisor.application.resubmit');
+});
+
 Route::prefix('admin')->name('admin.')->middleware(['auth:sanctum', 'active', 'role:ADMIN'])->group(function (): void {
+    Route::get('/supervisors', [AdminSupervisorController::class, 'index'])->name('supervisors.index');
+    Route::get('/supervisors/{user}', [AdminSupervisorController::class, 'show'])->whereNumber('user')->name('supervisors.show');
+    Route::patch('/supervisors/{user}/verification', [AdminSupervisorController::class, 'verify'])->whereNumber('user')->name('supervisors.verification');
+    Route::get('/companies', [AdminCompanyController::class, 'index'])->name('companies.index');
+    Route::get('/companies/{company}', [AdminCompanyController::class, 'show'])
+        ->whereNumber('company')->name('companies.show');
+    Route::patch('/companies/{company}/verification', [AdminCompanyController::class, 'verify'])
+        ->whereNumber('company')->name('companies.verification');
     Route::post('/academic-coordinators', [AcademicCoordinatorController::class, 'store'])->name('coordinators.store');
     Route::patch('/academic-coordinators/{user}', [AcademicCoordinatorController::class, 'update'])
         ->whereNumber('user')->name('coordinators.update');

@@ -12,6 +12,7 @@ use App\Shared\Enums\UserRole;
 use App\Shared\Enums\VerificationStatus;
 use Database\Seeders\RoleSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
 use Tests\TestCase;
@@ -65,6 +66,22 @@ class SupervisorRegistrationTest extends TestCase
             ->assertJsonPath('data.profile.company.verification_status', VerificationStatus::PENDING->value);
 
         $this->assertSame(VerificationStatus::PENDING, $company->fresh()->verification_status);
+    }
+
+    public function test_existing_company_eligibility_is_locked_in_the_registration_transaction(): void
+    {
+        $company = $this->company(VerificationStatus::PENDING);
+        $before = $company->fresh()->getAttributes();
+        $lockedInTransaction = false;
+        DB::listen(function ($query) use (&$lockedInTransaction): void {
+            if (str_contains($query->sql, '"companies"') && str_contains($query->sql, 'for update')) {
+                $lockedInTransaction = DB::transactionLevel() >= 2;
+            }
+        });
+        $this->postJson('/api/auth/register/supervisor', $this->existingCompanyPayload($company))->assertCreated();
+        $this->assertTrue($lockedInTransaction);
+        $this->assertSame($before, $company->fresh()->getAttributes());
+        $this->assertDatabaseCount('companies', 1);
     }
 
     public function test_rejected_existing_company_cannot_be_selected(): void

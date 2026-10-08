@@ -98,7 +98,7 @@ class RegistrationService
 
     private function resolveEligibleCompany(?int $companyId): Company
     {
-        $company = Company::query()->find($companyId);
+        $company = Company::query()->lockForUpdate()->find($companyId);
 
         if ($company === null) {
             throw ValidationException::withMessages([

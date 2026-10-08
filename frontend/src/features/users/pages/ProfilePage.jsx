@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { Link, Outlet } from 'react-router-dom'
+import { Link, NavLink, Outlet } from 'react-router-dom'
 import { AdminLayout } from '../../../app/layouts/AdminLayout'
 import { useAuth } from '../../auth/hooks/useAuth'
 import { errorMessage, getProfile, updateProfile } from '../api/usersApi'
@@ -25,12 +25,13 @@ export function ProfileLayout() {
 
   if (user.role === 'ADMIN') return <AdminLayout />
 
-  return <div className="profile-shell">
+  return <div className={`profile-shell${user.role === 'COMPANY_SUPERVISOR' ? ' supervisor-profile-shell' : ''}`}>
     <header className="profile-topbar">
       <Link to="/session" className="profile-brand">InternFlow</Link>
       <nav aria-label="Navigimi i llogarisë">
-        <Link to="/session">Llogaria ime</Link>
-        <Link to="/profile" aria-current="page">Profili</Link>
+        <NavLink to="/session">Llogaria ime</NavLink>
+        <NavLink to="/profile">Profili</NavLink>
+        {user.role === 'COMPANY_SUPERVISOR' && <NavLink to="/supervisor/verification">Verifikimi</NavLink>}
       </nav>
     </header>
     <main className="profile-main"><Outlet /></main>

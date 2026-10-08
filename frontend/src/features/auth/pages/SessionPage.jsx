@@ -75,6 +75,7 @@ export function SessionPage() {
         ) : null}
 
         <Link className="primary-button session-profile-link" to="/profile">Profili im</Link>
+        {user.role === USER_ROLES.COMPANY_SUPERVISOR && <Link className="secondary-button session-profile-link" to="/supervisor/verification">Aplikimi për verifikim</Link>}
 
         <button
           className="secondary-button"

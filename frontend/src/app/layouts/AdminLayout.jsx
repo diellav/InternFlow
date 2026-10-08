@@ -29,8 +29,10 @@ export function AdminLayout() {
       <nav aria-label="Navigimi i administratorit">
         <NavLink to="/admin" end onClick={() => setMobileOpen(false)}><span aria-hidden="true">01</span>Përmbledhja</NavLink>
         <NavLink to="/admin/users" onClick={() => setMobileOpen(false)}><span aria-hidden="true">02</span>Përdoruesit</NavLink>
-        <NavLink to="/admin/academic-coordinators/new" onClick={() => setMobileOpen(false)}><span aria-hidden="true">03</span>Krijo koordinator</NavLink>
-        <NavLink to="/profile" onClick={() => setMobileOpen(false)}><span aria-hidden="true">04</span>Profili im</NavLink>
+        <NavLink to="/admin/companies" onClick={() => setMobileOpen(false)}><span aria-hidden="true">03</span>Kompanitë</NavLink>
+        <NavLink to="/admin/academic-coordinators/new" onClick={() => setMobileOpen(false)}><span aria-hidden="true">04</span>Krijo koordinator</NavLink>
+        <NavLink to="/profile" onClick={() => setMobileOpen(false)}><span aria-hidden="true">05</span>Profili im</NavLink>
+        <NavLink to="/admin/supervisors" onClick={() => setMobileOpen(false)}><span aria-hidden="true">06</span>Mbikëqyrësit</NavLink>
       </nav>
       <div className="sidebar-footer"><p>Praktika të organizuara.<br />Qasje të qarta.</p><span>InternFlow · Administrimi</span></div>
     </aside>

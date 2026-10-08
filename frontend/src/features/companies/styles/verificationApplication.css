@@ -1,0 +1,16 @@
+.verification-application { display: grid; gap: 20px; }
+.verification-application > .account-badge { justify-self: start; }
+.verification-application-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.verification-application-section { padding: 24px; min-width: 0; }
+.verification-application-section h2 { margin-top: 0; }
+.verification-application-section .profile-fields { margin-top: 20px; }
+.verification-application-section dd, .verification-reason p { overflow-wrap: anywhere; white-space: pre-wrap; }
+.verification-application-section .profile-role-details > div { padding: 12px 0; border-bottom: 1px solid #eef0f5; }
+.verification-application-section dt { font-size: 12px; color: #5c687d; margin-bottom: 6px; }
+.verification-application-section dd { margin: 0; font-size: 14px; color: #263249; }
+.verification-reason { margin-top: 16px; padding: 16px; border-radius: 10px; background: #fff5f3; }
+.verification-reason h3 { font-size: 14px; margin-top: 0; }
+.verification-application-dialog { width: min(520px, calc(100% - 32px)); box-sizing: border-box; border: 0; border-radius: 16px; padding: 24px; max-height: calc(100dvh - 32px); overflow-y: auto; }
+.verification-application-dialog::backdrop { background: rgb(15 23 42 / 50%); }
+@media (max-width: 760px) { .verification-application-grid { grid-template-columns: 1fr; } .verification-application-section { padding: 18px; } }
+@media (max-width: 600px) { .supervisor-profile-shell .profile-topbar { flex-wrap: wrap; gap: 12px; } .supervisor-profile-shell .profile-topbar nav { flex-wrap: wrap; } }
