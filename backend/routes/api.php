@@ -5,6 +5,8 @@ use App\Modules\Auth\Controllers\RegistrationController;
 use App\Modules\Company\Controllers\AdminCompanyController;
 use App\Modules\Company\Controllers\AdminSupervisorController;
 use App\Modules\Company\Controllers\VerificationApplicationController;
+use App\Modules\Internship\Controllers\CoordinatorInternshipController;
+use App\Modules\Internship\Controllers\StudentInternshipController;
 use App\Modules\User\Controllers\AcademicCoordinatorController;
 use App\Modules\User\Controllers\AdminUserController;
 use App\Modules\User\Controllers\ProfileController;
@@ -61,4 +63,23 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:sanctum', 'active', 'r
     Route::get('/users/{user}', [AdminUserController::class, 'show'])->whereNumber('user')->name('users.show');
     Route::patch('/users/{user}/activation', [AdminUserController::class, 'updateActivation'])
         ->whereNumber('user')->name('users.activation.update');
+});
+
+Route::prefix('student')->name('student.')->middleware(['auth:sanctum', 'active', 'role:STUDENT'])->group(function (): void {
+    Route::get('/internship-options/companies', [StudentInternshipController::class, 'companies'])->name('internship-options.companies');
+    Route::get('/internship-options/companies/{company}/supervisors', [StudentInternshipController::class, 'supervisors'])->whereNumber('company')->name('internship-options.supervisors');
+    Route::get('/internships', [StudentInternshipController::class, 'index'])->name('internships.index');
+    Route::post('/internships', [StudentInternshipController::class, 'store'])->name('internships.store');
+    Route::post('/internships/{internship}/submit', [StudentInternshipController::class, 'submit'])->whereNumber('internship')->name('internships.submit');
+    Route::post('/internships/{internship}/resubmit', [StudentInternshipController::class, 'resubmit'])->whereNumber('internship')->name('internships.resubmit');
+    Route::get('/internships/{internship}', [StudentInternshipController::class, 'show'])->whereNumber('internship')->name('internships.show');
+    Route::patch('/internships/{internship}', [StudentInternshipController::class, 'update'])->whereNumber('internship')->name('internships.update');
+});
+
+Route::prefix('coordinator')->name('coordinator.')->middleware(['auth:sanctum', 'active', 'role:ACADEMIC_COORDINATOR'])->group(function (): void {
+    Route::get('/internships', [CoordinatorInternshipController::class, 'index'])->name('internships.index');
+    Route::get('/internships/{internship}', [CoordinatorInternshipController::class, 'show'])->whereNumber('internship')->name('internships.show');
+    Route::post('/internships/{internship}/claim', [CoordinatorInternshipController::class, 'claim'])->whereNumber('internship')->name('internships.claim');
+    Route::post('/internships/{internship}/start-review', [CoordinatorInternshipController::class, 'startReview'])->whereNumber('internship')->name('internships.start-review');
+    Route::post('/internships/{internship}/decision', [CoordinatorInternshipController::class, 'decision'])->whereNumber('internship')->name('internships.decision');
 });

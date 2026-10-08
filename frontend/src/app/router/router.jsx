@@ -3,6 +3,13 @@ import { PublicOnlyRoute } from '../../features/auth/guards/PublicOnlyRoute'
 import { RequireAuth } from '../../features/auth/guards/RequireAuth'
 import { RequireRole } from '../../features/auth/guards/RequireRole'
 import { AdminLayout } from '../layouts/AdminLayout'
+import { StudentLayout } from '../layouts/StudentLayout'
+import { CoordinatorLayout } from '../layouts/CoordinatorLayout'
+import { CoordinatorInternshipsPage } from '../../features/internships/pages/CoordinatorInternshipsPage'
+import { CoordinatorInternshipDetailsPage } from '../../features/internships/pages/CoordinatorInternshipDetailsPage'
+import { StudentInternshipsPage } from '../../features/internships/pages/StudentInternshipsPage'
+import { InternshipDraftPage } from '../../features/internships/pages/InternshipDraftPage'
+import { InternshipDetailsPage } from '../../features/internships/pages/InternshipDetailsPage'
 import { CompaniesPage } from '../../features/companies/pages/CompaniesPage'
 import { CompanyDetailsPage } from '../../features/companies/pages/CompanyDetailsPage'
 import { SupervisorsPage } from '../../features/companies/pages/SupervisorsPage'
@@ -59,6 +66,22 @@ export const router = createBrowserRouter([
           {
             element: <RequireRole allowedRoles={['COMPANY_SUPERVISOR']} />,
             children: [{ element: <ProfileLayout />, children: [{ path: 'supervisor/verification', element: <VerificationApplicationPage /> }] }],
+          },
+          {
+            element: <RequireRole allowedRoles={['STUDENT']} />,
+            children: [{ path: 'student/internships', element: <StudentLayout />, children: [
+              { index: true, element: <StudentInternshipsPage /> },
+              { path: 'new', element: <InternshipDraftPage key="new" /> },
+              { path: ':id', element: <InternshipDetailsPage /> },
+              { path: ':id/edit', element: <InternshipDraftPage key="edit" /> },
+            ] }],
+          },
+          {
+            element: <RequireRole allowedRoles={['ACADEMIC_COORDINATOR']} />,
+            children: [{ path: 'coordinator/internships', element: <CoordinatorLayout />, children: [
+              { index: true, element: <CoordinatorInternshipsPage /> },
+              { path: ':id', element: <CoordinatorInternshipDetailsPage /> },
+            ] }],
           },
           {
             element: <RequireRole allowedRoles={['ADMIN']} />,
