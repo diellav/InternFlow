@@ -78,6 +78,7 @@ export function SessionPage() {
         {user.role === USER_ROLES.STUDENT && <Link className="secondary-button session-profile-link" to="/student/internships">Praktikat e mia</Link>}
         {user.role === USER_ROLES.ACADEMIC_COORDINATOR && <Link className="secondary-button session-profile-link" to="/coordinator/internships">Aplikimet për praktikë</Link>}
         {user.role === USER_ROLES.COMPANY_SUPERVISOR && <Link className="secondary-button session-profile-link" to="/supervisor/verification">Aplikimi për verifikim</Link>}
+        {user.role === USER_ROLES.COMPANY_SUPERVISOR && <Link className="secondary-button session-profile-link" to="/supervisor/internships">Praktikat e caktuara</Link>}
 
         <button
           className="secondary-button"

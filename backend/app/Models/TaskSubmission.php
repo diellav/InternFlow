@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class TaskSubmission extends Model
@@ -25,5 +26,10 @@ class TaskSubmission extends Model
     public function feedback(): HasOne
     {
         return $this->hasOne(TaskFeedback::class, 'submission_id');
+    }
+
+    public function files(): HasMany
+    {
+        return $this->hasMany(TaskSubmissionFile::class)->orderBy('id');
     }
 }

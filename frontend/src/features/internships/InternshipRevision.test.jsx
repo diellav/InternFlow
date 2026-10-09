@@ -6,6 +6,7 @@ import { AuthContext } from '../auth/context/AuthContext'
 import { getInternship, getInternshipCompanies, getInternshipSupervisors, listCoordinatorInternships, listInternships, resubmitInternship, saveInternship, submitInternship } from './api/internshipsApi'
 
 vi.mock('./api/internshipsApi', async (importOriginal) => ({ ...await importOriginal(), getInternship: vi.fn(), getInternshipCompanies: vi.fn(), getInternshipSupervisors: vi.fn(), listCoordinatorInternships: vi.fn(), listInternships: vi.fn(), resubmitInternship: vi.fn(), saveInternship: vi.fn(), submitInternship: vi.fn() }))
+vi.mock('../tasks/api/tasksApi', async (importOriginal) => ({ ...await importOriginal(), listTasks: vi.fn(async () => ({ data: [], meta: { total: 0, current_page: 1, last_page: 1 } })) }))
 
 const student = { id: 8, first_name: 'Ada', last_name: 'Student', role: 'STUDENT', is_active: true }
 const revision = { id: 7, position_title: 'Software Intern', description: 'Original duties', company_id: 4, company_supervisor_id: 5, start_date: '2026-11-01', end_date: '2026-12-01', status: 'REVISION_REQUIRED', decision_comment: 'Clarify responsibilities.\nKeep these exact instructions.', submitted_at: '2026-10-01T12:00:00Z', coordinator_id: 9, company: { id: 4, name: 'Acme' }, supervisor: { user_id: 5, first_name: 'Drita', last_name: 'Mentor' }, coordinator: { first_name: 'Grace', last_name: 'Coordinator', academic_unit: 'Engineering' } }

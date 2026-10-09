@@ -3,6 +3,7 @@ import { Link, NavLink, Outlet } from 'react-router-dom'
 import { AdminLayout } from '../../../app/layouts/AdminLayout'
 import { StudentLayout } from '../../../app/layouts/StudentLayout'
 import { CoordinatorLayout } from '../../../app/layouts/CoordinatorLayout'
+import { SupervisorLayout } from '../../../app/layouts/SupervisorLayout'
 import { useAuth } from '../../auth/hooks/useAuth'
 import { errorMessage, getProfile, updateProfile } from '../api/usersApi'
 import { AccountBadge, PageHeading } from '../components/UserUi'
@@ -28,6 +29,7 @@ export function ProfileLayout() {
   if (user.role === 'ADMIN') return <AdminLayout />
   if (user.role === 'STUDENT') return <StudentLayout />
   if (user.role === 'ACADEMIC_COORDINATOR') return <CoordinatorLayout />
+  if (user.role === 'COMPANY_SUPERVISOR') return <SupervisorLayout />
 
   return <div className={`profile-shell${user.role === 'COMPANY_SUPERVISOR' ? ' supervisor-profile-shell' : ''}`}>
     <header className="profile-topbar">

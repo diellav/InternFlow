@@ -2,11 +2,17 @@
 
 return [
 
-
     'default' => env('FILESYSTEM_DISK', 'local'),
 
-
     'disks' => [
+
+        'task_attachments' => [
+            'driver' => 'local',
+            'root' => env('TASK_ATTACHMENTS_ROOT', storage_path('app/private/task-submission-files')),
+            'visibility' => 'private',
+            'serve' => false,
+            'throw' => true,
+        ],
 
         'local' => [
             'driver' => 'local',
@@ -39,7 +45,6 @@ return [
         ],
 
     ],
-
 
     'links' => [
         public_path('storage') => storage_path('app/public'),

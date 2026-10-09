@@ -1,0 +1,36 @@
+.supervisor-shell .student-brand > span { background: #28796a; }
+.task-feature { min-width: 0; }
+.task-feature h1, .task-feature h2, .task-feature h3, .task-feature p { overflow-wrap: anywhere; }
+.task-description { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 14px; line-height: 1.8; }
+.task-feature .internship-card h3 { margin: 20px 0 10px; font-size: 18px; }
+.task-feature .internship-card h3 a { color: #213d69; text-decoration: none; }
+.task-feature .internship-card > p { font-size: 12px; color: #536784; }
+.task-status-assigned { color: #235a91; background: #eaf3ff; }
+.task-status-approved { color: #216946; background: #e8f6ee; }
+.task-filters { display: flex; flex-wrap: wrap; align-items: end; gap: 18px; margin: 22px 0; }
+.task-filters form { display: flex; flex: 1 1 340px; flex-wrap: wrap; align-items: end; gap: 10px; min-width: 0; }
+.task-filters label { display: block; font-size: 12px; margin-bottom: 8px; color: #536784; }
+.task-filters form > label { flex-basis: 100%; }
+.task-filters input, .task-filters select { border: 1px solid #cbd5e5; border-radius: 8px; padding: 12px; font: inherit; font-size: 13px; background: #fff; min-width: 0; }
+.task-filters input { flex: 1; }
+.task-feature .internship-help { margin-top: 20px; }
+.task-submission-actions { margin-top: 24px; }
+.task-submission-actions > p, .task-submission-record > p { margin: 16px 0; }
+.task-submission-record { margin-top: 20px; padding-top: 16px; border-top: 1px solid #dfe6f0; }
+.task-submission-actions .admin-dialog { overflow-wrap: anywhere; }
+.task-feedback { margin-top: 20px; padding: 16px; border-left: 3px solid #28796a; background: #f6f8fc; overflow-wrap: anywhere; }
+.task-feedback > p { margin-top: 12px; }
+.task-review-dialog { overflow-wrap: anywhere; }
+.task-review-dialog .admin-dialog-actions { flex-wrap: wrap; }
+.task-review-dialog .admin-dialog-actions .admin-button { flex: 1 1 120px; }
+.task-submission-dialog .admin-dialog-actions, .task-submission-actions .admin-dialog-actions { flex-wrap: wrap; }
+.task-submission-dialog .admin-dialog-actions .admin-button, .task-submission-actions .admin-dialog-actions .admin-button { flex: 1 1 120px; }
+.task-submission-latest { border-top-color: #28796a; }
+.task-submission-record a, .task-attachments a, .task-selected-files li { overflow-wrap: anywhere; word-break: break-word; }
+.task-attachments { margin-top: 20px; }
+.task-attachments ul, .task-selected-files { list-style: none; padding: 0; }
+.task-attachments li, .task-selected-files li { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 12px; min-width: 0; }
+.task-attachments li a, .task-selected-files li > span { flex: 1 1 140px; min-width: 0; }
+.task-file-picker input { max-width: 100%; min-width: 0; }
+@media (max-width: 320px) { body:has(.task-feature) { min-width: 0; } }
+@media (max-width: 600px) { .task-filters { align-items: stretch; flex-direction: column; } .task-filters form { flex-basis: auto; } .task-filters select { width: 100%; } .supervisor-shell .student-header nav { gap: 14px; } }

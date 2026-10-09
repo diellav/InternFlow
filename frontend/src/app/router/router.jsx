@@ -5,6 +5,11 @@ import { RequireRole } from '../../features/auth/guards/RequireRole'
 import { AdminLayout } from '../layouts/AdminLayout'
 import { StudentLayout } from '../layouts/StudentLayout'
 import { CoordinatorLayout } from '../layouts/CoordinatorLayout'
+import { SupervisorLayout } from '../layouts/SupervisorLayout'
+import { SupervisorInternshipsPage } from '../../features/tasks/pages/SupervisorInternshipsPage'
+import { SupervisorInternshipDetailsPage } from '../../features/tasks/pages/SupervisorInternshipDetailsPage'
+import { TaskDetailsPage } from '../../features/tasks/pages/TaskDetailsPage'
+import { TaskFormPage } from '../../features/tasks/pages/TaskFormPage'
 import { CoordinatorInternshipsPage } from '../../features/internships/pages/CoordinatorInternshipsPage'
 import { CoordinatorInternshipDetailsPage } from '../../features/internships/pages/CoordinatorInternshipDetailsPage'
 import { StudentInternshipsPage } from '../../features/internships/pages/StudentInternshipsPage'
@@ -68,8 +73,18 @@ export const router = createBrowserRouter([
             children: [{ element: <ProfileLayout />, children: [{ path: 'supervisor/verification', element: <VerificationApplicationPage /> }] }],
           },
           {
+            element: <RequireRole allowedRoles={['COMPANY_SUPERVISOR']} />,
+            children: [{ element: <SupervisorLayout />, children: [
+              { path: 'supervisor/internships', element: <SupervisorInternshipsPage /> },
+              { path: 'supervisor/internships/:id', element: <SupervisorInternshipDetailsPage /> },
+              { path: 'supervisor/internships/:internshipId/tasks/new', element: <TaskFormPage /> },
+              { path: 'supervisor/tasks/:id', element: <TaskDetailsPage /> },
+              { path: 'supervisor/tasks/:id/edit', element: <TaskFormPage /> },
+            ] }],
+          },
+          {
             element: <RequireRole allowedRoles={['STUDENT']} />,
-            children: [{ path: 'student/internships', element: <StudentLayout />, children: [
+            children: [{ element: <StudentLayout />, children: [{ path: 'student/tasks/:id', element: <TaskDetailsPage student /> }] }, { path: 'student/internships', element: <StudentLayout />, children: [
               { index: true, element: <StudentInternshipsPage /> },
               { path: 'new', element: <InternshipDraftPage key="new" /> },
               { path: ':id', element: <InternshipDetailsPage /> },
