@@ -202,9 +202,10 @@ class TaskAttachmentTest extends TestCase
         $this->app['auth']->forgetGuards();
         $this->getJson($this->download($file))->assertUnauthorized();
         $other = $this->task();
-        foreach ([$other->internship->student->user, $other->internship->companySupervisor->user, $this->user('ADMIN'), $this->user('ACADEMIC_COORDINATOR')] as $actor) {
+        foreach ([$other->internship->student->user, $other->internship->companySupervisor->user, $this->user('ADMIN')] as $actor) {
             $this->actingAs($actor)->getJson($this->download($file))->assertNotFound();
         }
+        $this->actingAs($this->user('ACADEMIC_COORDINATOR'))->getJson($this->download($file))->assertForbidden();
         $supervisor = $task->internship->companySupervisor->user;
         foreach (['PENDING', 'REJECTED'] as $status) {
             $supervisor->companySupervisorProfile()->update(['verification_status' => $status]);

@@ -1,0 +1,4 @@
+@import '../../activities/styles/activities.css';
+.monitoring-feature { min-width: 0; }
+.monitoring-feature h1, .monitoring-feature h2, .monitoring-feature h3, .monitoring-feature p, .monitoring-feature a, .monitoring-feature dd { overflow-wrap: anywhere; }
+@media (max-width: 320px) { body:has(.monitoring-feature) { min-width: 0; } }

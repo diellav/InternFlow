@@ -1,0 +1,3 @@
+export function ActivityHoursSummary({ result }) {
+  return <section className="internship-panel activity-summary" aria-label="Përmbledhja e orëve"><p>{result.internship?.position_title}</p><div className="activity-summary-grid"><div><h2>Orët totale të regjistruara</h2><p className="activity-hours-total">{result.total_recorded_hours ?? '—'} orë</p></div><div><h2>Orët për periudhën e filtruar</h2><p className="activity-hours-filtered">{result.filtered_recorded_hours ?? '—'} orë</p></div></div><p className="internship-help">Totali përfshin të gjitha aktivitetet e praktikës; orët e filtruara përfshijnë të gjitha rezultatet që përputhen me datat dhe kërkimin, jo vetëm faqen aktuale. Orët e regjistruara nuk përbëjnë vijueshmëri të verifikuar.</p></section>
+}

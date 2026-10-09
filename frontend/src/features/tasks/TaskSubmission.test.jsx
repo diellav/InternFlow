@@ -136,7 +136,9 @@ it('handles loading, failure, retry and empty submission reads', async () => {
   let fail
   listTaskSubmissions.mockImplementationOnce(() => new Promise((resolve, reject) => { fail = reject }))
   getStudentTask.mockResolvedValue(submitted); renderPage()
-  await screen.findByText('Duke ngarkuar dorëzimet…'); fail({ status: 500 })
+  await screen.findByText('Duke ngarkuar dorëzimet…')
+  await waitFor(() => expect(fail).toBeTypeOf('function'))
+  fail({ status: 500 })
   await screen.findByRole('alert')
   listTaskSubmissions.mockResolvedValue({ data: [], meta: { ...meta, total: 0 } })
   fireEvent.click(screen.getByRole('button', { name: 'Provo përsëri' }))

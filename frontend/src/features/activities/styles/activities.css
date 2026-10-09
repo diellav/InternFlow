@@ -1,0 +1,18 @@
+.activity-feature { min-width: 0; }
+.activity-feature h1, .activity-feature h2, .activity-feature p, .activity-feature a { overflow-wrap: anywhere; }
+.activity-description { white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.8; }
+.activity-toolbar { display: flex; flex-wrap: wrap; align-items: end; gap: 18px; margin: 24px 0; }
+.activity-toolbar .form-field { flex: 1 1 260px; min-width: 0; }
+.activity-toolbar select { width: 100%; min-width: 0; max-width: 100%; }
+.activity-feature .internship-card h2 { margin: 18px 0; font-size: 18px; }
+.activity-feature .internship-card > p { margin: 14px 0; }
+.activity-filters { margin: 24px 0; }
+.activity-filter-grid, .activity-summary-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.activity-search-field { grid-column: 1 / -1; }
+.activity-filter-grid .form-field, .activity-filter-grid input { min-width: 0; width: 100%; box-sizing: border-box; }
+.activity-filter-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 18px; }
+.activity-summary { margin-bottom: 24px; }
+.activity-summary h2 { font-size: 18px; }
+@media (max-width: 600px) { .activity-filter-grid, .activity-summary-grid { grid-template-columns: minmax(0, 1fr); } .activity-filter-actions { flex-direction: column; } }
+@media (max-width: 320px) { body:has(.activity-feature) { min-width: 0; } }
+@media (max-width: 600px) { .activity-toolbar { flex-direction: column; align-items: stretch; } .activity-toolbar .form-field { flex-basis: auto; } }

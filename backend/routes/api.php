@@ -1,5 +1,7 @@
 <?php
 
+use App\Modules\Activity\Controllers\StudentActivityController;
+use App\Modules\Activity\Controllers\SupervisorActivityController;
 use App\Modules\Auth\Controllers\AuthController;
 use App\Modules\Auth\Controllers\RegistrationController;
 use App\Modules\Company\Controllers\AdminCompanyController;
@@ -8,6 +10,7 @@ use App\Modules\Company\Controllers\VerificationApplicationController;
 use App\Modules\Internship\Controllers\CoordinatorInternshipController;
 use App\Modules\Internship\Controllers\StudentInternshipController;
 use App\Modules\Internship\Controllers\SupervisorInternshipController;
+use App\Modules\Monitoring\Controllers\CoordinatorMonitoringController;
 use App\Modules\Task\Controllers\StudentTaskController;
 use App\Modules\Task\Controllers\TaskController;
 use App\Modules\Task\Controllers\TaskReviewController;
@@ -72,6 +75,10 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:sanctum', 'active', 'r
 });
 
 Route::prefix('student')->name('student.')->middleware(['auth:sanctum', 'active', 'role:STUDENT'])->group(function (): void {
+    Route::get('/internships/{internship}/activities', [StudentActivityController::class, 'index'])->whereNumber('internship')->name('activities.index');
+    Route::post('/internships/{internship}/activities', [StudentActivityController::class, 'store'])->whereNumber('internship')->name('activities.store');
+    Route::get('/activities/{activity}', [StudentActivityController::class, 'show'])->whereNumber('activity')->name('activities.show');
+    Route::patch('/activities/{activity}', [StudentActivityController::class, 'update'])->whereNumber('activity')->name('activities.update');
     Route::post('/tasks/{task}/resubmit', [StudentTaskController::class, 'resubmit'])->whereNumber('task')->name('tasks.resubmit');
     Route::post('/tasks/{task}/start', [StudentTaskController::class, 'start'])->whereNumber('task')->name('tasks.start');
     Route::post('/tasks/{task}/submissions', [StudentTaskController::class, 'submit'])->whereNumber('task')->name('tasks.submit');
@@ -89,6 +96,15 @@ Route::prefix('student')->name('student.')->middleware(['auth:sanctum', 'active'
 });
 
 Route::prefix('coordinator')->name('coordinator.')->middleware(['auth:sanctum', 'active', 'role:ACADEMIC_COORDINATOR'])->group(function (): void {
+    Route::prefix('monitoring')->name('monitoring.')->group(function (): void {
+        Route::get('/internships', [CoordinatorMonitoringController::class, 'index'])->name('internships.index');
+        Route::get('/internships/{internship}', [CoordinatorMonitoringController::class, 'show'])->whereNumber('internship')->name('internships.show');
+        Route::get('/internships/{internship}/activities', [CoordinatorMonitoringController::class, 'activities'])->whereNumber('internship')->name('activities.index');
+        Route::get('/activities/{activity}', [CoordinatorMonitoringController::class, 'activity'])->whereNumber('activity')->name('activities.show');
+        Route::get('/internships/{internship}/tasks', [CoordinatorMonitoringController::class, 'tasks'])->whereNumber('internship')->name('tasks.index');
+        Route::get('/tasks/{task}', [CoordinatorMonitoringController::class, 'task'])->whereNumber('task')->name('tasks.show');
+        Route::get('/tasks/{task}/submissions', [CoordinatorMonitoringController::class, 'submissions'])->whereNumber('task')->name('submissions.index');
+    });
     Route::get('/internships', [CoordinatorInternshipController::class, 'index'])->name('internships.index');
     Route::get('/internships/{internship}', [CoordinatorInternshipController::class, 'show'])->whereNumber('internship')->name('internships.show');
     Route::post('/internships/{internship}/claim', [CoordinatorInternshipController::class, 'claim'])->whereNumber('internship')->name('internships.claim');
@@ -97,6 +113,8 @@ Route::prefix('coordinator')->name('coordinator.')->middleware(['auth:sanctum', 
 });
 
 Route::prefix('supervisor')->name('supervisor.')->middleware(['auth:sanctum', 'active', 'role:COMPANY_SUPERVISOR', 'supervisor.approved'])->group(function (): void {
+    Route::get('/internships/{internship}/activities', [SupervisorActivityController::class, 'index'])->whereNumber('internship')->name('activities.index');
+    Route::get('/activities/{activity}', [SupervisorActivityController::class, 'show'])->whereNumber('activity')->name('activities.show');
     Route::post('/tasks/{task}/review', [TaskReviewController::class, 'store'])->whereNumber('task')->name('tasks.review');
     Route::get('/tasks/{task}/submissions', [StudentTaskController::class, 'submissions'])->whereNumber('task')->name('tasks.submissions');
     Route::get('/internships', [SupervisorInternshipController::class, 'index'])->name('internships.index');

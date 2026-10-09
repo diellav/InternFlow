@@ -10,6 +10,14 @@ import { SupervisorInternshipsPage } from '../../features/tasks/pages/Supervisor
 import { SupervisorInternshipDetailsPage } from '../../features/tasks/pages/SupervisorInternshipDetailsPage'
 import { TaskDetailsPage } from '../../features/tasks/pages/TaskDetailsPage'
 import { TaskFormPage } from '../../features/tasks/pages/TaskFormPage'
+import { ActivitiesPage } from '../../features/activities/pages/ActivitiesPage'
+import { ActivityDetailsPage } from '../../features/activities/pages/ActivityDetailsPage'
+import { ActivityFormPage } from '../../features/activities/pages/ActivityFormPage'
+import { SupervisorActivitiesPage } from '../../features/activities/pages/SupervisorActivitiesPage'
+import { MonitoringInternshipsPage } from '../../features/monitoring/pages/MonitoringInternshipsPage'
+import { MonitoringInternshipPage } from '../../features/monitoring/pages/MonitoringInternshipPage'
+import { MonitoringActivitiesPage, MonitoringActivityPage } from '../../features/monitoring/pages/MonitoringActivitiesPage'
+import { MonitoringTaskPage } from '../../features/monitoring/pages/MonitoringTaskPage'
 import { CoordinatorInternshipsPage } from '../../features/internships/pages/CoordinatorInternshipsPage'
 import { CoordinatorInternshipDetailsPage } from '../../features/internships/pages/CoordinatorInternshipDetailsPage'
 import { StudentInternshipsPage } from '../../features/internships/pages/StudentInternshipsPage'
@@ -77,6 +85,8 @@ export const router = createBrowserRouter([
             children: [{ element: <SupervisorLayout />, children: [
               { path: 'supervisor/internships', element: <SupervisorInternshipsPage /> },
               { path: 'supervisor/internships/:id', element: <SupervisorInternshipDetailsPage /> },
+              { path: 'supervisor/internships/:internshipId/activities', element: <SupervisorActivitiesPage /> },
+              { path: 'supervisor/activities/:id', element: <ActivityDetailsPage supervisor /> },
               { path: 'supervisor/internships/:internshipId/tasks/new', element: <TaskFormPage /> },
               { path: 'supervisor/tasks/:id', element: <TaskDetailsPage /> },
               { path: 'supervisor/tasks/:id/edit', element: <TaskFormPage /> },
@@ -84,7 +94,13 @@ export const router = createBrowserRouter([
           },
           {
             element: <RequireRole allowedRoles={['STUDENT']} />,
-            children: [{ element: <StudentLayout />, children: [{ path: 'student/tasks/:id', element: <TaskDetailsPage student /> }] }, { path: 'student/internships', element: <StudentLayout />, children: [
+            children: [{ element: <StudentLayout />, children: [
+              { path: 'student/tasks/:id', element: <TaskDetailsPage student /> },
+              { path: 'student/activities', element: <ActivitiesPage /> },
+              { path: 'student/activities/:id', element: <ActivityDetailsPage /> },
+              { path: 'student/activities/:id/edit', element: <ActivityFormPage /> },
+              { path: 'student/internships/:internshipId/activities/new', element: <ActivityFormPage /> },
+            ] }, { path: 'student/internships', element: <StudentLayout />, children: [
               { index: true, element: <StudentInternshipsPage /> },
               { path: 'new', element: <InternshipDraftPage key="new" /> },
               { path: ':id', element: <InternshipDetailsPage /> },
@@ -93,7 +109,13 @@ export const router = createBrowserRouter([
           },
           {
             element: <RequireRole allowedRoles={['ACADEMIC_COORDINATOR']} />,
-            children: [{ path: 'coordinator/internships', element: <CoordinatorLayout />, children: [
+            children: [{ element: <CoordinatorLayout />, children: [
+              { path: 'coordinator/monitoring/internships', element: <MonitoringInternshipsPage /> },
+              { path: 'coordinator/monitoring/internships/:id', element: <MonitoringInternshipPage /> },
+              { path: 'coordinator/monitoring/internships/:id/activities', element: <MonitoringActivitiesPage /> },
+              { path: 'coordinator/monitoring/activities/:id', element: <MonitoringActivityPage /> },
+              { path: 'coordinator/monitoring/tasks/:id', element: <MonitoringTaskPage /> },
+            ] }, { path: 'coordinator/internships', element: <CoordinatorLayout />, children: [
               { index: true, element: <CoordinatorInternshipsPage /> },
               { path: ':id', element: <CoordinatorInternshipDetailsPage /> },
             ] }],

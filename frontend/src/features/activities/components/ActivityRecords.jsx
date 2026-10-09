@@ -1,0 +1,8 @@
+import { Link, useLocation } from 'react-router-dom'
+
+export function ActivityRecords({ result, page, setPage, supervisor = false, filtered = false, recordsBase }) {
+  const base = recordsBase ?? (supervisor ? '/supervisor' : '/student')
+  const location = useLocation()
+  const activityList = location.pathname + location.search
+return <section aria-label="Aktivitetet e regjistruara">{!result.data.length ? <div className="internship-empty"><h2>{filtered ? 'Nuk ka aktivitete që përputhen' : 'Nuk ka aktivitete'}</h2><p>{filtered ? 'Asnjë aktivitet nuk përputhet me filtrat. Ndryshoni ose pastroni filtrat.' : (supervisor || recordsBase) ? 'Studenti nuk ka regjistruar aktivitete për këtë praktikë.' : 'Regjistroni aktivitetin tuaj të parë për këtë praktikë.'}</p></div> : <div className="internship-cards">{result.data.map((activity) => <article className="internship-card" key={activity.id}><p>{activity.activity_date} · {activity.hours === null ? 'Orët nuk janë shënuar' : `${activity.hours} orë`}</p><h2><Link to={`${base}/activities/${activity.id}`} state={{ activityList }}>{activity.title}</Link></h2><p className="activity-description">{activity.description}</p><Link className="internship-back" to={`${base}/activities/${activity.id}`} state={{ activityList }}>Detajet e aktivitetit →</Link></article>)}</div>}<div className="internship-pagination"><span>{result.meta.total} aktivitete · Faqja {result.meta.current_page} nga {result.meta.last_page}</span><div><button className="admin-button" disabled={page <= 1} onClick={() => setPage(page - 1)}>Para</button><button className="admin-button" disabled={page >= result.meta.last_page} onClick={() => setPage(page + 1)}>Pas</button></div></div></section>
+}

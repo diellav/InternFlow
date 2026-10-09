@@ -4,6 +4,7 @@ namespace App\Modules\Task\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\TaskSubmissionFile;
+use App\Modules\Monitoring\Services\CoordinatorMonitoringService;
 use App\Shared\Enums\UserRole;
 use App\Shared\Enums\VerificationStatus;
 use Illuminate\Http\Request;
@@ -25,6 +26,8 @@ class TaskSubmissionFileController extends Controller
             $allowed = $profile !== null && $internship->company_supervisor_id === $user->id
                 && $profile->company_id === $internship->company_id && $profile->verification_status === VerificationStatus::APPROVED
                 && $profile->company?->is_active && $profile->company->verification_status === VerificationStatus::APPROVED;
+        } elseif ($user->hasRole(UserRole::ACADEMIC_COORDINATOR)) {
+            $allowed = app(CoordinatorMonitoringService::class)->internships($user)->whereKey($internship->id)->exists();
         }
         abort_unless($allowed, 404);
         abort_unless(preg_match('/^[0-9a-f-]{36}\.bin$/D', $record->storage_path), 404);
