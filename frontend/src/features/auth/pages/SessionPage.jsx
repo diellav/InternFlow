@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { USER_ROLES, VERIFICATION_STATUSES } from '../constants/authConstants'
 import { useAuth } from '../hooks/useAuth'
+import { NotificationBell } from '../../notifications/components/NotificationBell'
 import '../styles/auth.css'
 
 function statusText(status) {
@@ -38,7 +39,7 @@ export function SessionPage() {
   return (
     <main className="auth-shell">
       <section className="auth-card session-card" aria-labelledby="session-heading">
-        <p className="auth-brand">InternFlow</p>
+        <div className="notification-session-heading"><p className="auth-brand">InternFlow</p><NotificationBell /></div>
         <p className="session-label">Sesioni i autentikuar</p>
         <h1 id="session-heading">
           {user.first_name} {user.last_name}

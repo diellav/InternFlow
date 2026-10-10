@@ -84,7 +84,8 @@ class CoordinatorCompletionTest extends TestCase
         }
         $this->assertSame($before['parent']['student_id'], $after['parent']['student_id']);
         $this->assertSame($before['parent']['company_supervisor_id'], $after['parent']['company_supervisor_id']);
-        $this->assertDatabaseCount('notifications', 0);
+        $this->assertDatabaseCount('notifications', 1);
+        $this->assertSame('internship_completed', $parent->student->user->notifications()->sole()->data['category']);
         foreach ([$this->viewPath($parent), '/api/coordinator/monitoring/internships/'.$parent->id,
             '/api/coordinator/monitoring/internships/'.$parent->id.'/activities', '/api/coordinator/monitoring/activities/'.$activity->id,
             '/api/coordinator/monitoring/internships/'.$parent->id.'/tasks', '/api/coordinator/monitoring/tasks/'.$task->id,

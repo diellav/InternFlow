@@ -8,6 +8,7 @@ use App\Models\CompanySupervisorProfile;
 use App\Models\Internship;
 use App\Models\StudentProfile;
 use App\Models\User;
+use App\Modules\Notification\Services\NotificationDispatchService;
 use App\Shared\Enums\InternshipStatus;
 use App\Shared\Enums\UserRole;
 use App\Shared\Enums\VerificationStatus;
@@ -75,6 +76,7 @@ class StudentInternshipService
             abort_unless($internship->status === InternshipStatus::DRAFT->value, 409, 'Only a draft can be submitted.');
             $this->eligibility->validateCompleted($internship);
             $internship->forceFill(['status' => InternshipStatus::SUBMITTED->value, 'submitted_at' => now(), 'coordinator_id' => null])->save();
+            app(NotificationDispatchService::class)->applicationSubmitted($internship);
 
             return $internship->load($this->relations);
         });
@@ -91,6 +93,7 @@ class StudentInternshipService
             abort_unless(AcademicCoordinatorProfile::query()->sharedLock()->find($internship->coordinator_id) !== null, 422, 'An assigned academic coordinator is required.');
             $this->eligibility->validateCompleted($internship);
             $internship->forceFill(['status' => InternshipStatus::SUBMITTED->value, 'submitted_at' => now(), 'decision_comment' => null, 'approved_at' => null])->save();
+            app(NotificationDispatchService::class)->applicationSubmitted($internship);
 
             return $internship->load($this->relations);
         });

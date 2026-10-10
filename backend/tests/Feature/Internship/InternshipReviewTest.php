@@ -48,9 +48,11 @@ class InternshipReviewTest extends TestCase
             ->assertJsonPath('data.decision_comment', null)->assertJsonPath('data.completed_at', null);
         $this->assertSame($coordinator->id, $application->fresh()->coordinator_id);
         $this->postJson($this->path($application, 'decision'), ['decision' => 'APPROVED'])->assertConflict();
-        foreach (['tasks', 'activity_logs', 'messages', 'notifications', 'final_evaluations'] as $table) {
+        foreach (['tasks', 'activity_logs', 'messages', 'final_evaluations'] as $table) {
             $this->assertDatabaseCount($table, 0);
         }
+        $this->assertDatabaseCount('notifications', 1);
+        $this->assertSame('application_approved', $application->student->user->notifications()->sole()->data['category']);
     }
 
     public function test_rejection_and_revision_store_trimmed_reasons_clear_approval_and_are_visible_to_the_student(): void

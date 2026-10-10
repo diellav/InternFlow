@@ -5,6 +5,7 @@ namespace App\Modules\Internship\Services;
 use App\Models\AcademicCoordinatorProfile;
 use App\Models\Internship;
 use App\Models\User;
+use App\Modules\Notification\Services\NotificationDispatchService;
 use App\Shared\Enums\InternshipStatus;
 use App\Shared\Enums\UserRole;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -116,6 +117,7 @@ class CoordinatorInternshipService
                 'approved_at' => $decision === InternshipStatus::APPROVED->value ? now() : null,
                 'decision_comment' => $decision === InternshipStatus::APPROVED->value ? null : $comment,
             ])->save();
+            app(NotificationDispatchService::class)->applicationDecided($internship);
 
             return $internship->load($this->relations);
         });

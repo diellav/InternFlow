@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../features/auth/hooks/useAuth'
+import { NotificationBell } from '../../features/notifications/components/NotificationBell'
 import '../../features/auth/styles/auth.css'
 import '../../features/users/styles/admin.css'
 
@@ -37,7 +38,7 @@ export function AdminLayout() {
       <div className="sidebar-footer"><p>Praktika të organizuara.<br />Qasje të qarta.</p><span>InternFlow · Administrimi</span></div>
     </aside>
     <div className="admin-workspace">
-      <header className="admin-topbar"><button className="admin-button mobile-menu" aria-expanded={mobileOpen} aria-controls="admin-navigation" onClick={() => setMobileOpen(!mobileOpen)}>{mobileOpen ? 'Mbyll menynë' : 'Menyja'}</button><span className="topbar-label">Menaxhimi i përdoruesve</span><div className="topbar-account"><span className="user-avatar" aria-hidden="true">{user.first_name?.[0]}{user.last_name?.[0]}</span><div><strong>{user.first_name} {user.last_name}</strong><small>Administrator</small></div><button className="admin-button" onClick={exit} disabled={loggingOut}>{loggingOut ? 'Duke dalë…' : 'Dil'}</button></div></header>
+      <header className="admin-topbar"><button className="admin-button mobile-menu" aria-expanded={mobileOpen} aria-controls="admin-navigation" onClick={() => setMobileOpen(!mobileOpen)}>{mobileOpen ? 'Mbyll menynë' : 'Menyja'}</button><span className="topbar-label">Menaxhimi i përdoruesve</span><div className="topbar-account"><span className="user-avatar" aria-hidden="true">{user.first_name?.[0]}{user.last_name?.[0]}</span><div><strong>{user.first_name} {user.last_name}</strong><small>Administrator</small></div><NotificationBell /><button className="admin-button" onClick={exit} disabled={loggingOut}>{loggingOut ? 'Duke dalë…' : 'Dil'}</button></div></header>
       <main className="admin-main" id="admin-content">{error && <p className="form-alert" role="alert">{error}</p>}<Outlet /></main>
     </div>
   </div>

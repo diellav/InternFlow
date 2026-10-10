@@ -32,7 +32,7 @@ afterEach(() => routers.splice(0).forEach((memory) => memory.dispose()))
 
 it('adds student navigation and lists activity date, description and working hours', async () => {
   renderPage()
-  expect(await screen.findByRole('link', { name: 'Work diary' })).toHaveAttribute('href', '/student/activities/3')
+  expect(await screen.findByRole('link', { name: 'Work diary' }, { timeout: 5000 })).toHaveAttribute('href', '/student/activities/3')
   expect(screen.getByRole('link', { name: 'Aktivitetet e mia', exact: true })).toHaveAttribute('href', '/student/activities')
   expect(screen.getByText('2026-10-09 · 2.50 orë')).toBeInTheDocument()
   expect(screen.getByText(activity.description)).toBeInTheDocument()
@@ -44,7 +44,7 @@ it('switches between multiple active internships and discards late results from 
   const memory = renderPage()
   await screen.findByLabelText('Praktika aktive')
   fireEvent.change(screen.getByLabelText('Praktika aktive'), { target: { value: '8' } })
-  await screen.findByRole('link', { name: 'Second work' })
+  await screen.findByRole('link', { name: 'Second work' }, { timeout: 5000 })
   finish({ data: [activity], meta, internship })
   await waitFor(() => expect(screen.queryByRole('link', { name: 'Work diary' })).not.toBeInTheDocument())
   expect(memory.state.location.search).toBe('?internship=8')

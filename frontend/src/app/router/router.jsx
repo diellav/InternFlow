@@ -40,6 +40,7 @@ import { LoginPage } from '../../features/auth/pages/LoginPage'
 import { StudentRegistrationPage } from '../../features/auth/pages/StudentRegistrationPage'
 import { SupervisorRegistrationPage } from '../../features/auth/pages/SupervisorRegistrationPage'
 import { SessionPage } from '../../features/auth/pages/SessionPage'
+import { NotificationsPage } from '../../features/notifications/pages/NotificationsPage'
 import { RootLayout } from '../layouts/RootLayout'
 
 export const router = createBrowserRouter([
@@ -76,7 +77,7 @@ export const router = createBrowserRouter([
           },
           {
             element: <ProfileLayout />,
-            children: [{ path: 'profile', element: <ProfilePage /> }],
+            children: [{ path: 'profile', element: <ProfilePage /> }, { path: 'notifications', element: <NotificationsPage /> }],
           },
           {
             element: <RequireRole allowedRoles={['COMPANY_SUPERVISOR']} />,

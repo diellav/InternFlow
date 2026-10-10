@@ -6,6 +6,7 @@ use App\Models\Company;
 use App\Models\CompanySupervisorProfile;
 use App\Models\Internship;
 use App\Models\User;
+use App\Modules\Notification\Services\NotificationDispatchService;
 use App\Shared\Enums\UserRole;
 use App\Shared\Enums\VerificationStatus;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -94,6 +95,7 @@ class SupervisorInternshipService
                 throw ValidationException::withMessages(['internship' => [$reason]]);
             }
             $internship->forceFill(['status' => 'ACTIVE'])->save();
+            app(NotificationDispatchService::class)->internshipActivated($internship);
 
             return $internship;
         });

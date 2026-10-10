@@ -58,9 +58,11 @@ class InternshipRevisionTest extends TestCase
         $this->postJson($this->path($application, 'resubmit'))->assertConflict();
         $this->patchJson($this->path($application), ['description' => 'Stale edit'])->assertConflict();
         $this->assertDatabaseCount('internships', 1);
-        foreach (['tasks', 'activity_logs', 'notifications', 'messages', 'final_evaluations'] as $table) {
+        foreach (['tasks', 'activity_logs', 'messages', 'final_evaluations'] as $table) {
             $this->assertDatabaseCount($table, 0);
         }
+        $this->assertDatabaseCount('notifications', 1);
+        $this->assertSame('application_submitted', $application->coordinator->user->notifications()->sole()->data['category']);
     }
 
     public function test_every_other_status_and_direct_stale_service_calls_cannot_resubmit(): void

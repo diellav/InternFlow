@@ -1,8 +1,9 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
+import { NotificationProvider } from '../../notifications/providers/NotificationProvider'
 
 export function RequireAuth() {
-  const { isAuthenticated, isLoading } = useAuth()
+  const { isAuthenticated, isLoading, user } = useAuth()
   const location = useLocation()
 
   if (isLoading) {
@@ -10,7 +11,7 @@ export function RequireAuth() {
   }
 
   return isAuthenticated ? (
-    <Outlet />
+    user ? <NotificationProvider key={user.id}><Outlet /></NotificationProvider> : <Outlet />
   ) : (
     <Navigate to="/login" replace state={{ from: location }} />
   )

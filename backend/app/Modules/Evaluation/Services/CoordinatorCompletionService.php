@@ -7,6 +7,7 @@ use App\Models\Internship;
 use App\Models\TaskSubmission;
 use App\Models\User;
 use App\Modules\Monitoring\Services\CoordinatorMonitoringService;
+use App\Modules\Notification\Services\NotificationDispatchService;
 use App\Shared\Enums\UserRole;
 use Illuminate\Support\Facades\DB;
 
@@ -59,6 +60,7 @@ class CoordinatorCompletionService
             abort_unless($this->readinessReason($parent) === null && $parent->finalEvaluation->id === $evaluationId, 409, 'The internship or final evaluation is no longer ready for completion.');
             $timestamp = now()->toIso8601String();
             DB::table('internships')->where('id', $parent->id)->update(['status' => 'COMPLETED', 'completed_at' => $timestamp, 'updated_at' => $timestamp]);
+            app(NotificationDispatchService::class)->internshipCompleted($parent);
 
             return app(CoordinatorMonitoringService::class)->internship($actor, $id);
         });

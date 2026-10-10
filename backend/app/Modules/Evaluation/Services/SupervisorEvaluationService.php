@@ -8,6 +8,7 @@ use App\Models\FinalEvaluation;
 use App\Models\Internship;
 use App\Models\TaskSubmission;
 use App\Models\User;
+use App\Modules\Notification\Services\NotificationDispatchService;
 use App\Shared\Enums\UserRole;
 use App\Shared\Enums\VerificationStatus;
 use Illuminate\Support\Arr;
@@ -78,6 +79,7 @@ class SupervisorEvaluationService
             Validator::make($values, [...$rules, 'comments' => ['required', 'string', 'min:20', 'max:10000']])->validate();
             $timestamp = now()->toIso8601String();
             DB::table('final_evaluations')->where('id', $evaluation->id)->update(['submitted_at' => $timestamp]);
+            app(NotificationDispatchService::class)->finalEvaluationSubmitted($parent);
 
             return $parent->setRelation('finalEvaluation', $evaluation->refresh());
         });

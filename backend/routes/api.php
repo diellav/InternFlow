@@ -14,6 +14,7 @@ use App\Modules\Internship\Controllers\CoordinatorInternshipController;
 use App\Modules\Internship\Controllers\StudentInternshipController;
 use App\Modules\Internship\Controllers\SupervisorInternshipController;
 use App\Modules\Monitoring\Controllers\CoordinatorMonitoringController;
+use App\Modules\Notification\Controllers\NotificationController;
 use App\Modules\Task\Controllers\StudentTaskController;
 use App\Modules\Task\Controllers\TaskController;
 use App\Modules\Task\Controllers\TaskReviewController;
@@ -48,6 +49,10 @@ Route::get('/auth/me', [AuthController::class, 'me'])
     ->name('auth.me');
 
 Route::middleware(['auth:sanctum', 'active'])->group(function (): void {
+    Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::get('/notifications/unread-count', [NotificationController::class, 'unreadCount'])->name('notifications.unread-count');
+    Route::patch('/notifications/read-all', [NotificationController::class, 'readAll'])->name('notifications.read-all');
+    Route::patch('/notifications/{notification}/read', [NotificationController::class, 'read'])->whereUuid('notification')->name('notifications.read');
     Route::get('/task-submission-files/{file}/download', [TaskSubmissionFileController::class, 'download'])->whereNumber('file')->name('task-submission-files.download');
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

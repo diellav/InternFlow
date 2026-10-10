@@ -6,6 +6,7 @@ use App\Models\Internship;
 use App\Models\StudentProfile;
 use App\Models\Task;
 use App\Models\User;
+use App\Modules\Notification\Services\NotificationDispatchService;
 use App\Shared\Enums\TaskStatus;
 use App\Shared\Enums\UserRole;
 use Illuminate\Database\QueryException;
@@ -69,6 +70,9 @@ class StudentTaskService
                     $record->files()->createMany($files);
                 }
                 $task->forceFill(['status' => $submission === null ? 'IN_PROGRESS' : 'SUBMITTED'])->save();
+                if ($submission !== null) {
+                    app(NotificationDispatchService::class)->taskSubmitted($internship, $task);
+                }
 
                 return app(TaskService::class)->details($user, $id, true);
             });
