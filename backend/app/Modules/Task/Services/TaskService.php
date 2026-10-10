@@ -27,7 +27,7 @@ class TaskService
         return Task::query()->whereHas('internship', function (Builder $query) use ($user, $student): void {
             $query->where($student ? 'student_id' : 'company_supervisor_id', $user->id);
             if ($student) {
-                $query->where('status', 'ACTIVE');
+                $query->whereIn('status', ['ACTIVE', 'COMPLETED']);
             }
         })->with($this->relations)->withExists('submissions');
     }
@@ -40,7 +40,7 @@ class TaskService
     public function paginate(User $user, int $internshipId, array $filters, bool $student = false): LengthAwarePaginator
     {
         $internship = $student ? $this->students->details($user, $internshipId) : $this->supervisors->details($user, $internshipId);
-        abort_if($student && $internship->status !== 'ACTIVE', 404);
+        abort_if($student && ! in_array($internship->status, ['ACTIVE', 'COMPLETED'], true), 404);
         $query = $this->query($user, $student)->where('internship_id', $internship->id);
         foreach (['status', 'priority'] as $field) {
             if (isset($filters[$field])) {

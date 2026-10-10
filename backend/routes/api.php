@@ -7,6 +7,9 @@ use App\Modules\Auth\Controllers\RegistrationController;
 use App\Modules\Company\Controllers\AdminCompanyController;
 use App\Modules\Company\Controllers\AdminSupervisorController;
 use App\Modules\Company\Controllers\VerificationApplicationController;
+use App\Modules\Evaluation\Controllers\CoordinatorEvaluationController;
+use App\Modules\Evaluation\Controllers\StudentEvaluationController;
+use App\Modules\Evaluation\Controllers\SupervisorEvaluationController;
 use App\Modules\Internship\Controllers\CoordinatorInternshipController;
 use App\Modules\Internship\Controllers\StudentInternshipController;
 use App\Modules\Internship\Controllers\SupervisorInternshipController;
@@ -75,6 +78,7 @@ Route::prefix('admin')->name('admin.')->middleware(['auth:sanctum', 'active', 'r
 });
 
 Route::prefix('student')->name('student.')->middleware(['auth:sanctum', 'active', 'role:STUDENT'])->group(function (): void {
+    Route::get('/internships/{internship}/final-evaluation', [StudentEvaluationController::class, 'show'])->whereNumber('internship')->name('final-evaluation.show');
     Route::get('/internships/{internship}/activities', [StudentActivityController::class, 'index'])->whereNumber('internship')->name('activities.index');
     Route::post('/internships/{internship}/activities', [StudentActivityController::class, 'store'])->whereNumber('internship')->name('activities.store');
     Route::get('/activities/{activity}', [StudentActivityController::class, 'show'])->whereNumber('activity')->name('activities.show');
@@ -97,6 +101,7 @@ Route::prefix('student')->name('student.')->middleware(['auth:sanctum', 'active'
 
 Route::prefix('coordinator')->name('coordinator.')->middleware(['auth:sanctum', 'active', 'role:ACADEMIC_COORDINATOR'])->group(function (): void {
     Route::prefix('monitoring')->name('monitoring.')->group(function (): void {
+        Route::get('/internships/{internship}/final-evaluation', [CoordinatorEvaluationController::class, 'show'])->whereNumber('internship')->name('final-evaluation.show');
         Route::get('/internships', [CoordinatorMonitoringController::class, 'index'])->name('internships.index');
         Route::get('/internships/{internship}', [CoordinatorMonitoringController::class, 'show'])->whereNumber('internship')->name('internships.show');
         Route::get('/internships/{internship}/activities', [CoordinatorMonitoringController::class, 'activities'])->whereNumber('internship')->name('activities.index');
@@ -106,6 +111,7 @@ Route::prefix('coordinator')->name('coordinator.')->middleware(['auth:sanctum', 
         Route::get('/tasks/{task}/submissions', [CoordinatorMonitoringController::class, 'submissions'])->whereNumber('task')->name('submissions.index');
     });
     Route::get('/internships', [CoordinatorInternshipController::class, 'index'])->name('internships.index');
+    Route::post('/internships/{internship}/complete', [CoordinatorEvaluationController::class, 'complete'])->whereNumber('internship')->name('internships.complete');
     Route::get('/internships/{internship}', [CoordinatorInternshipController::class, 'show'])->whereNumber('internship')->name('internships.show');
     Route::post('/internships/{internship}/claim', [CoordinatorInternshipController::class, 'claim'])->whereNumber('internship')->name('internships.claim');
     Route::post('/internships/{internship}/start-review', [CoordinatorInternshipController::class, 'startReview'])->whereNumber('internship')->name('internships.start-review');
@@ -113,6 +119,9 @@ Route::prefix('coordinator')->name('coordinator.')->middleware(['auth:sanctum', 
 });
 
 Route::prefix('supervisor')->name('supervisor.')->middleware(['auth:sanctum', 'active', 'role:COMPANY_SUPERVISOR', 'supervisor.approved'])->group(function (): void {
+    Route::get('/internships/{internship}/final-evaluation', [SupervisorEvaluationController::class, 'show'])->whereNumber('internship')->name('final-evaluation.show');
+    Route::put('/internships/{internship}/final-evaluation', [SupervisorEvaluationController::class, 'save'])->whereNumber('internship')->name('final-evaluation.save');
+    Route::post('/internships/{internship}/final-evaluation/submit', [SupervisorEvaluationController::class, 'submit'])->whereNumber('internship')->name('final-evaluation.submit');
     Route::get('/internships/{internship}/activities', [SupervisorActivityController::class, 'index'])->whereNumber('internship')->name('activities.index');
     Route::get('/activities/{activity}', [SupervisorActivityController::class, 'show'])->whereNumber('activity')->name('activities.show');
     Route::post('/tasks/{task}/review', [TaskReviewController::class, 'store'])->whereNumber('task')->name('tasks.review');

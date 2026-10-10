@@ -7,6 +7,7 @@ import { InternshipStatusBadge } from '../components/InternshipStatusBadge'
 import { SubmitInternshipDialog } from '../components/SubmitInternshipDialog'
 import { InternshipDecisionSummary } from '../components/InternshipDecisionSummary'
 import { TaskList } from '../../tasks/components/TaskList'
+import { StudentEvaluationSection } from '../../evaluations/components/StudentEvaluationSection'
 
 function dateLabel(value) {
   return value ? new Intl.DateTimeFormat('sq-AL', { dateStyle: 'medium', timeStyle: 'short' }).format(new Date(value)) : null
@@ -49,7 +50,10 @@ export function InternshipDetailsPage() {
     {location.state?.notice && ['DRAFT', 'REVISION_REQUIRED'].includes(internship.status) && <p className="form-success" role="status">{location.state.notice}</p>}
     {location.state?.conflict && <p className="form-alert" role="alert">{location.state.conflict}</p>}
     <InternshipDecisionSummary internship={internship} student />
-    {internship.status === 'ACTIVE' && <TaskList key={internship.id} internshipId={internship.id} student />}
+    {internship.status === 'COMPLETED' && <section className="internship-panel internship-record"><h2>Praktika e përfunduar</h2><p>COMPLETED · Evidencat dhe vlerësimi janë vetëm për lexim.</p><p>Përfunduar më: {internship.completed_at ? <time dateTime={internship.completed_at}>{dateLabel(internship.completed_at)}</time> : 'Nuk është shënuar'}</p></section>}
+    {internship.status === 'ACTIVE' && <p className="internship-help internship-record">Vlerësimi përfundimtar bëhet i disponueshëm pasi koordinatori konfirmon përfundimin e praktikës.</p>}
+    {['ACTIVE', 'COMPLETED'].includes(internship.status) && <><section className="internship-panel internship-record"><h2>Aktivitetet dhe orët</h2><Link className="admin-button" to={`/student/internships/${id}/activities`}>Shiko aktivitetet dhe orët</Link></section><TaskList key={`${internship.id}-${internship.status}`} internshipId={internship.id} student readOnly={internship.status === 'COMPLETED'} /></>}
+    {internship.status === 'COMPLETED' && <StudentEvaluationSection key={internship.id} internshipId={internship.id} />}
     <div className="internship-detail-grid"><section className="internship-panel"><h2>Informacioni i praktikës</h2><dl className="internship-facts">{facts.map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value ?? 'Nuk është dhënë'}</dd></div>)}</dl></section><section className="internship-panel"><h2>Përshkrimi i praktikës</h2><p className="internship-description">{internship.description || 'Përshkrimi nuk është plotësuar ende.'}</p><div className="internship-help"><strong>{internship.status === 'REVISION_REQUIRED' ? 'Aplikim për korrigjim' : internship.status === 'DRAFT' ? 'Aplikimi është ende draft' : 'Aplikim vetëm për lexim'}</strong><p>{internship.status === 'REVISION_REQUIRED' ? 'Ruani korrigjimet, pastaj ridorëzojeni veçmas te koordinatori i caktuar.' : internship.status === 'DRAFT' ? 'Mund të ndryshoni informacionin e ruajtur. Ky draft nuk është dorëzuar për shqyrtim akademik.' : 'Ky aplikim nuk mund të ndryshohet përmes redaktimit të draftit.'}</p></div></section></div>
     <section className="internship-panel internship-record"><h2>Të dhënat e regjistrimit</h2><dl className="internship-facts">{[['Krijuar më', dateLabel(internship.created_at)], ['Përditësuar më', dateLabel(internship.updated_at)], ['Dorëzuar më', dateLabel(internship.submitted_at)], ['Miratuar më', dateLabel(internship.approved_at)], ['Përfunduar më', dateLabel(internship.completed_at)], ['Koordinatori', internship.coordinator ? `${internship.coordinator.first_name} ${internship.coordinator.last_name}` : null], ['Njësia akademike', internship.coordinator?.academic_unit], ['Shënimi i vendimit', internship.decision_comment]].map(([label, value]) => <div key={label}><dt>{label}</dt><dd>{value ?? 'Nuk është dhënë'}</dd></div>)}</dl></section>
   </>

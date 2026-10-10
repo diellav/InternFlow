@@ -4,10 +4,12 @@ import { afterEach, beforeEach, expect, it, vi } from 'vitest'
 import { router } from '../../app/router/router'
 import { AuthContext } from '../auth/context/AuthContext'
 import { downloadTaskFile } from '../tasks/api/tasksApi'
+import { getCoordinatorEvaluation } from '../evaluations/api/coordinatorEvaluationApi'
 import { getMonitoringActivity, getMonitoringInternship, getMonitoringTask, listMonitoringActivities, listMonitoringInternships, listMonitoringSubmissions, listMonitoringTasks } from './api/monitoringApi'
 
 vi.mock('./api/monitoringApi', async (original) => ({ ...await original(), getMonitoringActivity: vi.fn(), getMonitoringInternship: vi.fn(), getMonitoringTask: vi.fn(), listMonitoringActivities: vi.fn(), listMonitoringInternships: vi.fn(), listMonitoringSubmissions: vi.fn(), listMonitoringTasks: vi.fn() }))
 vi.mock('../tasks/api/tasksApi', async (original) => ({ ...await original(), downloadTaskFile: vi.fn() }))
+vi.mock('../evaluations/api/coordinatorEvaluationApi', async (original) => ({ ...await original(), getCoordinatorEvaluation: vi.fn() }))
 const user = { id: 9, first_name: 'Grace', last_name: 'Coordinator', role: 'ACADEMIC_COORDINATOR', is_active: true }
 const parent = { id: 7, position_title: 'Academic monitoring', description: 'Internship work', status: 'ACTIVE', start_date: '2026-10-01', end_date: '2026-10-31', tasks_count: 1, approved_tasks_count: 1, student: { first_name: 'Arta', last_name: 'Student', study_program: 'CS' }, company: { name: 'Company' }, supervisor: { first_name: 'Drita', last_name: 'Mentor' } }
 const task = { id: 3, title: 'Reviewed task', description: 'Build the form', priority: 'MEDIUM', status: 'APPROVED', due_date: null, progress_percent: null, assigned_by: { first_name: 'Drita', last_name: 'Mentor' }, internship: parent, can_edit: true, can_review: true, can_submit: true }
@@ -26,6 +28,7 @@ beforeEach(() => {
   configure({ asyncUtilTimeout: 5000 }); vi.resetAllMocks()
   listMonitoringInternships.mockResolvedValue({ data: [parent], meta })
   getMonitoringInternship.mockResolvedValue(parent)
+  getCoordinatorEvaluation.mockResolvedValue({ internship: parent, evaluation: null, can_complete: false, completion_blocker: 'MISSING_SUBMITTED_EVALUATION' })
   listMonitoringTasks.mockResolvedValue({ data: [task], meta })
   getMonitoringTask.mockResolvedValue(task)
   getMonitoringActivity.mockResolvedValue(activity)

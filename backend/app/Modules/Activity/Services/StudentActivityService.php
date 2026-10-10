@@ -38,7 +38,7 @@ class StudentActivityService
     public function details(User $user, int $id): ActivityLog
     {
         $activity = $this->owned($user, $id);
-        abort_unless($activity->internship->status === 'ACTIVE', 404);
+        abort_unless(in_array($activity->internship->status, ['ACTIVE', 'COMPLETED'], true), 404);
 
         return $activity;
     }
@@ -46,7 +46,7 @@ class StudentActivityService
     public function listing(User $user, int $id, array $filters): array
     {
         $internship = $this->parent($user, $id);
-        abort_unless($internship->student_id === $user->id && $internship->status === 'ACTIVE', 404);
+        abort_unless($internship->student_id === $user->id && in_array($internship->status, ['ACTIVE', 'COMPLETED'], true), 404);
 
         return $this->queries->listing($internship, $filters);
     }

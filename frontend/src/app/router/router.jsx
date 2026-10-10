@@ -10,7 +10,9 @@ import { SupervisorInternshipsPage } from '../../features/tasks/pages/Supervisor
 import { SupervisorInternshipDetailsPage } from '../../features/tasks/pages/SupervisorInternshipDetailsPage'
 import { TaskDetailsPage } from '../../features/tasks/pages/TaskDetailsPage'
 import { TaskFormPage } from '../../features/tasks/pages/TaskFormPage'
+import { SupervisorEvaluationPage } from '../../features/evaluations/pages/SupervisorEvaluationPage'
 import { ActivitiesPage } from '../../features/activities/pages/ActivitiesPage'
+import { InternshipActivitiesPage } from '../../features/activities/pages/InternshipActivitiesPage'
 import { ActivityDetailsPage } from '../../features/activities/pages/ActivityDetailsPage'
 import { ActivityFormPage } from '../../features/activities/pages/ActivityFormPage'
 import { SupervisorActivitiesPage } from '../../features/activities/pages/SupervisorActivitiesPage'
@@ -85,6 +87,7 @@ export const router = createBrowserRouter([
             children: [{ element: <SupervisorLayout />, children: [
               { path: 'supervisor/internships', element: <SupervisorInternshipsPage /> },
               { path: 'supervisor/internships/:id', element: <SupervisorInternshipDetailsPage /> },
+              { path: 'supervisor/internships/:id/final-evaluation', element: <SupervisorEvaluationPage /> },
               { path: 'supervisor/internships/:internshipId/activities', element: <SupervisorActivitiesPage /> },
               { path: 'supervisor/activities/:id', element: <ActivityDetailsPage supervisor /> },
               { path: 'supervisor/internships/:internshipId/tasks/new', element: <TaskFormPage /> },
@@ -97,6 +100,7 @@ export const router = createBrowserRouter([
             children: [{ element: <StudentLayout />, children: [
               { path: 'student/tasks/:id', element: <TaskDetailsPage student /> },
               { path: 'student/activities', element: <ActivitiesPage /> },
+              { path: 'student/internships/:internshipId/activities', element: <InternshipActivitiesPage /> },
               { path: 'student/activities/:id', element: <ActivityDetailsPage /> },
               { path: 'student/activities/:id/edit', element: <ActivityFormPage /> },
               { path: 'student/internships/:internshipId/activities/new', element: <ActivityFormPage /> },

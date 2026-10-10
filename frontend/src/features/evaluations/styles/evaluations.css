@@ -1,0 +1,10 @@
+.evaluation-feature { min-width: 0; }
+.evaluation-feature h1, .evaluation-feature h2, .evaluation-feature p, .evaluation-feature dd, .evaluation-feature label { overflow-wrap: anywhere; }
+.evaluation-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.evaluation-ratings { display: grid; gap: 1rem; }
+.evaluation-ratings div { display: flex; justify-content: space-between; gap: 1rem; }
+.evaluation-ratings dd { margin: 0; flex-shrink: 0; }
+.evaluation-comments { white-space: pre-wrap; }
+.evaluation-feature select, .evaluation-feature textarea { min-width: 0; max-width: 100%; }
+@media (max-width: 640px) { .evaluation-grid { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 320px) { body:has(.evaluation-feature) { min-width: 0; } }

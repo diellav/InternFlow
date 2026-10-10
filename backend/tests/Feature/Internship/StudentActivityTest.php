@@ -111,7 +111,7 @@ class StudentActivityTest extends TestCase
         $this->assertSame('Diary entry', $activity->fresh()->title);
     }
 
-    public function test_all_nonactive_states_deny_create_edit_and_reads(): void
+    public function test_nonactive_states_deny_writes_and_only_completed_evidence_remains_readable(): void
     {
         $internship = $this->internship();
         $activity = $this->activity($internship);
@@ -123,8 +123,9 @@ class StudentActivityTest extends TestCase
             $internship->update(['status' => $status->value]);
             $this->postJson($this->path($internship), $this->payload())->assertConflict();
             $this->patchJson('/api/student/activities/'.$activity->id, ['title' => 'Unsafe'])->assertConflict();
-            $this->getJson($this->path($internship))->assertNotFound();
-            $this->getJson('/api/student/activities/'.$activity->id)->assertNotFound();
+            $expected = $status->value === 'COMPLETED' ? 200 : 404;
+            $this->getJson($this->path($internship))->assertStatus($expected);
+            $this->getJson('/api/student/activities/'.$activity->id)->assertStatus($expected);
         }
         $this->assertSame('Diary entry', $activity->fresh()->title);
         $this->assertDatabaseCount('activity_logs', 1);
