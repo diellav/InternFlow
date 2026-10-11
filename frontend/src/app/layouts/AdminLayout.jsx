@@ -34,6 +34,7 @@ export function AdminLayout() {
         <NavLink to="/admin/academic-coordinators/new" onClick={() => setMobileOpen(false)}><span aria-hidden="true">04</span>Krijo koordinator</NavLink>
         <NavLink to="/profile" onClick={() => setMobileOpen(false)}><span aria-hidden="true">05</span>Profili im</NavLink>
         <NavLink to="/admin/supervisors" onClick={() => setMobileOpen(false)}><span aria-hidden="true">06</span>Mbikëqyrësit</NavLink>
+        <NavLink to="/admin/internships" onClick={() => setMobileOpen(false)}><span aria-hidden="true">07</span>Praktikat</NavLink>
       </nav>
       <div className="sidebar-footer"><p>Praktika të organizuara.<br />Qasje të qarta.</p><span>InternFlow · Administrimi</span></div>
     </aside>

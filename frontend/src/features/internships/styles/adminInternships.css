@@ -1,0 +1,12 @@
+.admin-internship-summary { margin-top: 28px; }
+.admin-internship-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.admin-internship-stats > div { padding: 20px; }
+.admin-internship-stats dt { color: #5c687d; font-size: 13px; }
+.admin-internship-stats dd { margin: 12px 0 0; font-size: 30px; font-weight: 700; }
+.admin-internships { min-width: 0; }
+.admin-internships .admin-filters { align-items: end; }
+.admin-internships td { overflow-wrap: anywhere; }
+.admin-internships td small { display: block; color: #5c687d; }
+.admin-internships dd { white-space: pre-wrap; }
+@media (max-width: 1000px) { .admin-internship-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 540px) { .admin-internship-stats { grid-template-columns: 1fr; } .admin-internships .admin-detail-list > div { grid-template-columns: 1fr; gap: 6px; } }

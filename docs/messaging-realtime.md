@@ -22,7 +22,7 @@ Generate distinct Reverb app ID/key/secret values outside version control. Set b
 
 `php artisan reverb:start` starts the WebSocket server. `REVERB_SERVER_HOST` defaults to loopback, not public exposure. Allowed origins default to the configured frontend hostname; `REVERB_ALLOWED_ORIGINS` can explicitly list comma-separated hostnames. No wildcard origins or client-originated broadcasting are enabled. Production must use HTTPS/WSS and process supervision; production deployment is not verified by local testing.
 
-Backend and frontend `.env.example` files contain empty key placeholders only. Actual development `.env` files are untouched. Applying the pending 9B migration to development still requires explicit authorization. Without that migration and Reverb configuration, development messaging is not ready to run; an absent frontend app key is presented as offline.
+Backend and frontend `.env.example` files contain empty key placeholders only. In the subsequent authorized local configuration step, development `.env` files were configured consistently for Reverb at `127.0.0.1:8080`, with origins `localhost` and `127.0.0.1`. The user applied the 9B migration; configuration verification confirmed the read-cursor column exists. Credentials remain local and Git-ignored. Laravel, Vite and Reverb must be running for the demonstration; an absent frontend app key is presented as offline.
 
 ## Implemented contracts
 

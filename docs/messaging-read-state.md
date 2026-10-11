@@ -2,7 +2,7 @@
 
 ## Schema and cursor
 
-The existing participant table already has `last_read_at`. Its timestamp alone cannot disambiguate messages sharing a second, so the additive migration adds nullable `last_read_message_id`, referencing `messages.id`, and an index on `messages(conversation_id, id)`. No tables are duplicated. The development migration has **not** been run.
+The existing participant table already has `last_read_at`. Its timestamp alone cannot disambiguate messages sharing a second, so the additive migration adds nullable `last_read_message_id`, referencing `messages.id`, and an index on `messages(conversation_id, id)`. No tables are duplicated. The user subsequently applied this migration to development; local configuration verification confirmed that the read-cursor column exists. The final review does not run migrations.
 
 Existing participant cursors start null: existing incoming messages therefore count as unread. Legacy timestamps are retained but are not silently converted into potentially incorrect read positions. The cursor follows immutable message IDs within one conversation. Message sends are serialized by the internship row lock; acknowledgement uses that same lock and a conditional forward-only update. The API also verifies that the referenced message belongs to the conversation. The foreign key prevents dangling cursors, while same-conversation validation is enforced by the service.
 

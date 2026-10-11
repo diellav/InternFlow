@@ -6,6 +6,7 @@ import { AuthContext } from '../auth/context/AuthContext'
 import { getUser, listUsers, saveCoordinator, updateActivation } from './api/usersApi'
 
 vi.mock('./api/usersApi', () => ({ listUsers: vi.fn(), getUser: vi.fn(), saveCoordinator: vi.fn(), updateActivation: vi.fn(), errorMessage: (error) => error.message ?? 'Veprimi nuk u krye.' }))
+vi.mock('../internships/api/adminInternshipsApi', () => ({ getAdminInternshipStatistics: vi.fn(async () => ({ total: 8, pending_review: 2, active: 1, completed: 1 })) }))
 
 const admin = { id: 99, first_name: 'Admin', last_name: 'Test', role: 'ADMIN' }
 const student = { id: 7, first_name: 'Diella', last_name: 'Hoxha', email: 'diella@example.test', is_active: true, role: 'STUDENT' }
@@ -36,7 +37,7 @@ describe('Admin area', () => {
     expect(screen.queryByText('Llogaritë e sistemit')).not.toBeInTheDocument()
   })
 
-  it('renders the Admin landing page without invented statistics', async () => {
+  it('preserves the Admin landing page alongside database-backed internship statistics', async () => {
     renderPage('/admin')
     expect(await screen.findByText('Mirë se vini, Admin')).toBeInTheDocument()
     expect(screen.getByRole('link', { name: /Shtoni një koordinator/ })).toHaveAttribute('href', '/admin/academic-coordinators/new')

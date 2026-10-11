@@ -20,3 +20,7 @@ coverage/
 Thumbs.db
 *.log
 docs/diagrams/
+docs/thesis-demo-guide.md
+docs/thesis-implementation-summary.md
+doc/demo-data-seeder.md
+

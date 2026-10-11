@@ -10,6 +10,7 @@ use App\Modules\Company\Controllers\VerificationApplicationController;
 use App\Modules\Evaluation\Controllers\CoordinatorEvaluationController;
 use App\Modules\Evaluation\Controllers\StudentEvaluationController;
 use App\Modules\Evaluation\Controllers\SupervisorEvaluationController;
+use App\Modules\Internship\Controllers\AdminInternshipController;
 use App\Modules\Internship\Controllers\CoordinatorInternshipController;
 use App\Modules\Internship\Controllers\StudentInternshipController;
 use App\Modules\Internship\Controllers\SupervisorInternshipController;
@@ -77,6 +78,9 @@ Route::prefix('supervisor/verification-application')->middleware(['auth:sanctum'
 });
 
 Route::prefix('admin')->name('admin.')->middleware(['auth:sanctum', 'active', 'role:ADMIN'])->group(function (): void {
+    Route::get('/internships/statistics', [AdminInternshipController::class, 'statistics'])->name('internships.statistics');
+    Route::get('/internships', [AdminInternshipController::class, 'index'])->name('internships.index');
+    Route::get('/internships/{internship}', [AdminInternshipController::class, 'show'])->whereNumber('internship')->name('internships.show');
     Route::get('/supervisors', [AdminSupervisorController::class, 'index'])->name('supervisors.index');
     Route::get('/supervisors/{user}', [AdminSupervisorController::class, 'show'])->whereNumber('user')->name('supervisors.show');
     Route::patch('/supervisors/{user}/verification', [AdminSupervisorController::class, 'verify'])->whereNumber('user')->name('supervisors.verification');
