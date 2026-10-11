@@ -42,6 +42,10 @@ it.each(['https://example.com', '//example.com', 'javascript:alert(1)', 'data:te
   expect(safeNotificationUrl(url)).toBe(null)
 })
 
-it.each(['/student/tasks/12', '/student/internships/12', '/coordinator/internships/12', '/coordinator/monitoring/internships/12', '/supervisor/tasks/12', '/admin/users/12'])('accepts allowlisted internal destination %s', url => {
+it.each(['/messages/conversations/12', '/student/tasks/12', '/student/internships/12', '/coordinator/internships/12', '/coordinator/monitoring/internships/12', '/supervisor/tasks/12', '/admin/users/12'])('accepts allowlisted internal destination %s', url => {
   expect(safeNotificationUrl(url)).toBe(url)
+})
+
+it.each(['/messages/conversations/0', '/messages/conversations/01', '/messages/conversations/12?next=evil', '/messages/conversations/12#evil', '/messages/conversations/%31', '/messages/conversations/12\n', '//messages/conversations/12'])('rejects malformed messaging destination %s', url => {
+  expect(safeNotificationUrl(url)).toBe(null)
 })

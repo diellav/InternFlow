@@ -13,11 +13,11 @@ class ConversationParticipant extends Model
 
     protected $primaryKey = null;
 
-    protected $fillable = ['conversation_id', 'user_id', 'joined_at', 'last_read_at'];
+    protected $fillable = ['conversation_id', 'user_id', 'joined_at', 'last_read_at', 'last_read_message_id'];
 
     protected function casts(): array
     {
-        return ['joined_at' => 'datetime', 'last_read_at' => 'datetime'];
+        return ['joined_at' => 'datetime', 'last_read_at' => 'datetime', 'last_read_message_id' => 'integer'];
     }
 
     public function conversation(): BelongsTo

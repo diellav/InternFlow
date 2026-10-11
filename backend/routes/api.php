@@ -13,6 +13,7 @@ use App\Modules\Evaluation\Controllers\SupervisorEvaluationController;
 use App\Modules\Internship\Controllers\CoordinatorInternshipController;
 use App\Modules\Internship\Controllers\StudentInternshipController;
 use App\Modules\Internship\Controllers\SupervisorInternshipController;
+use App\Modules\Messaging\Controllers\MessagingController;
 use App\Modules\Monitoring\Controllers\CoordinatorMonitoringController;
 use App\Modules\Notification\Controllers\NotificationController;
 use App\Modules\Task\Controllers\StudentTaskController;
@@ -56,6 +57,17 @@ Route::middleware(['auth:sanctum', 'active'])->group(function (): void {
     Route::get('/task-submission-files/{file}/download', [TaskSubmissionFileController::class, 'download'])->whereNumber('file')->name('task-submission-files.download');
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+});
+
+Route::middleware(['auth:sanctum', 'active', 'role:STUDENT,COMPANY_SUPERVISOR,ACADEMIC_COORDINATOR'])->group(function (): void {
+    Route::get('/messaging/unread-count', [MessagingController::class, 'unreadCount']);
+    Route::get('/messaging/internships', [MessagingController::class, 'internships']);
+    Route::patch('/messaging/conversations/{conversation}/read', [MessagingController::class, 'read'])->whereNumber('conversation');
+    Route::get('/messaging/conversations', [MessagingController::class, 'index']);
+    Route::get('/messaging/conversations/{conversation}', [MessagingController::class, 'show'])->whereNumber('conversation');
+    Route::post('/internships/{internship}/conversations', [MessagingController::class, 'open'])->whereNumber('internship');
+    Route::get('/messaging/conversations/{conversation}/messages', [MessagingController::class, 'messages'])->whereNumber('conversation');
+    Route::post('/messaging/conversations/{conversation}/messages', [MessagingController::class, 'send'])->whereNumber('conversation')->middleware('throttle:60,1');
 });
 
 Route::prefix('supervisor/verification-application')->middleware(['auth:sanctum', 'active', 'role:COMPANY_SUPERVISOR'])->group(function (): void {

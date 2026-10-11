@@ -8,3 +8,8 @@ vi.mock('../features/notifications/api/notificationsApi', async original => ({
 }))
 
 afterEach(cleanup)
+
+vi.mock('../features/messaging/api/messagingApi', async original => ({
+  ...await original(),
+  getUnreadMessageCount: vi.fn(async () => ({ unread_messages: 0, unread_conversations: 0 })),
+}))

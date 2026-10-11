@@ -7,7 +7,7 @@ use Illuminate\Validation\Rule;
 
 class NotificationPayload
 {
-    private const RELATED_TYPES = ['internship', 'task', 'activity', 'company', 'user', 'final_evaluation'];
+    private const RELATED_TYPES = ['internship', 'task', 'activity', 'company', 'user', 'final_evaluation', 'conversation'];
 
     public static function make(array $data): array
     {
@@ -62,6 +62,7 @@ class NotificationPayload
     private static function isInternalRoute(mixed $url): bool
     {
         return is_string($url) && strlen($url) <= 255
-            && preg_match('~^/(?:student|supervisor|coordinator|admin)/(?:internships|tasks|activities|companies|users|supervisors|monitoring/internships|monitoring/tasks|monitoring/activities)(?:/[1-9][0-9]*)?(?:/(?:activities|final-evaluation))?$~D', $url) === 1;
+            && (preg_match('~^/messages/conversations/[1-9][0-9]*$~D', $url) === 1
+                || preg_match('~^/(?:student|supervisor|coordinator|admin)/(?:internships|tasks|activities|companies|users|supervisors|monitoring/internships|monitoring/tasks|monitoring/activities)(?:/[1-9][0-9]*)?(?:/(?:activities|final-evaluation))?$~D', $url) === 1);
     }
 }

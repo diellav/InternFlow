@@ -1,6 +1,7 @@
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
 import { NotificationProvider } from '../../notifications/providers/NotificationProvider'
+import { MessagingProvider } from '../../messaging/providers/MessagingProvider'
 
 export function RequireAuth() {
   const { isAuthenticated, isLoading, user } = useAuth()
@@ -11,7 +12,7 @@ export function RequireAuth() {
   }
 
   return isAuthenticated ? (
-    user ? <NotificationProvider key={user.id}><Outlet /></NotificationProvider> : <Outlet />
+    user ? <NotificationProvider key={`${user.id}:${user.role}`}><MessagingProvider><Outlet /></MessagingProvider></NotificationProvider> : <Outlet />
   ) : (
     <Navigate to="/login" replace state={{ from: location }} />
   )

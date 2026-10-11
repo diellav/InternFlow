@@ -32,5 +32,5 @@ export function notificationErrorMessage(error) {
 }
 
 export function safeNotificationUrl(url) {
-  return typeof url === 'string' && url.length <= 255 && !/\s/.test(url) && /^\/(?:student|supervisor|coordinator|admin)\/(?:internships|tasks|activities|companies|users|supervisors|monitoring\/internships|monitoring\/tasks|monitoring\/activities)(?:\/[1-9][0-9]*)?(?:\/(?:activities|final-evaluation))?$/.test(url) ? url : null
+  return typeof url === 'string' && url.length <= 255 && !/\s/.test(url) && (/^\/messages\/conversations\/[1-9][0-9]*$/.test(url) || /^\/(?:student|supervisor|coordinator|admin)\/(?:internships|tasks|activities|companies|users|supervisors|monitoring\/internships|monitoring\/tasks|monitoring\/activities)(?:\/[1-9][0-9]*)?(?:\/(?:activities|final-evaluation))?$/.test(url)) ? url : null
 }

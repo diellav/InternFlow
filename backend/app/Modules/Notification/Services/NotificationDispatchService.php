@@ -2,18 +2,53 @@
 
 namespace App\Modules\Notification\Services;
 
+use App\Models\Conversation;
 use App\Models\Internship;
+use App\Models\Message;
 use App\Models\Task;
 use App\Models\User;
+use App\Modules\Messaging\Services\MessagingService;
 use App\Shared\Enums\UserRole;
 use App\Shared\Enums\VerificationStatus;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use LogicException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Throwable;
 
 class NotificationDispatchService
 {
+    public function messageReceived(Conversation $conversation, Message $message): void
+    {
+        if (DB::transactionLevel() === 0) {
+            throw new LogicException('Business notifications require an active transaction.');
+        }
+        try {
+            DB::transaction(function () use ($conversation, $message): void {
+                foreach ($conversation->participants->sortBy('id') as $recipient) {
+                    if ($recipient->id === $message->sender_id) {
+                        continue;
+                    }
+                    try {
+                        app(MessagingService::class)->conversation($recipient, $conversation->id);
+                    } catch (HttpException|ModelNotFoundException $denied) {
+                        continue;
+                    }
+                    $payload = NotificationPayload::make(['category' => 'message_received', 'title' => 'Mesazh i ri',
+                        'message' => 'Keni pranuar një mesazh të ri.', 'action_url' => '/messages/conversations/'.$conversation->id,
+                        'related_type' => 'conversation', 'related_id' => $conversation->id]);
+                    $timestamp = now()->toIso8601String();
+                    DB::table('notifications')->insert(['id' => (string) Str::uuid(), 'type' => 'message_received',
+                        'notifiable_id' => $recipient->id, 'notifiable_type' => $recipient->getMorphClass(),
+                        'data' => json_encode($payload, JSON_THROW_ON_ERROR), 'created_at' => $timestamp, 'updated_at' => $timestamp]);
+                }
+            });
+        } catch (Throwable $failure) {
+            report($failure);
+        }
+    }
+
     public function applicationSubmitted(Internship $internship): void
     {
         $this->send($internship, UserRole::ACADEMIC_COORDINATOR, 'application_submitted', 'Aplikimi u dorëzua',

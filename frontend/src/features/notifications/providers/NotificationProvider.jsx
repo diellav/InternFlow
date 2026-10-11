@@ -72,5 +72,6 @@ export function NotificationProvider({ children }) {
     }
   }
 
-  return <NotificationContext.Provider value={{ count, countError, mutationError, busy, revision, refreshCount, markRead: id => mutate(id), markAll: () => mutate() }}>{children}</NotificationContext.Provider>
+  const invalidate = useCallback(() => { refreshCount(); setRevision(value => value + 1) }, [refreshCount])
+  return <NotificationContext.Provider value={{ count, countError, mutationError, busy, revision, refreshCount, invalidate, markRead: id => mutate(id), markAll: () => mutate() }}>{children}</NotificationContext.Provider>
 }

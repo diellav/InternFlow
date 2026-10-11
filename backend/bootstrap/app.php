@@ -14,6 +14,7 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
     )
+    ->withBroadcasting(__DIR__.'/../routes/channels.php', ['prefix' => 'api', 'middleware' => ['api', 'auth:sanctum', 'active', 'role:STUDENT,COMPANY_SUPERVISOR,ACADEMIC_COORDINATOR']])
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->statefulApi();
 
@@ -23,5 +24,4 @@ return Application::configure(basePath: dirname(__DIR__))
             'supervisor.approved' => EnsureSupervisorIsApproved::class,
         ]);
     })
-    ->withExceptions(function (Exceptions $exceptions): void {
-    })->create();
+    ->withExceptions(function (Exceptions $exceptions): void {})->create();

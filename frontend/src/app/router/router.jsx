@@ -42,6 +42,7 @@ import { SupervisorRegistrationPage } from '../../features/auth/pages/Supervisor
 import { SessionPage } from '../../features/auth/pages/SessionPage'
 import { NotificationsPage } from '../../features/notifications/pages/NotificationsPage'
 import { RootLayout } from '../layouts/RootLayout'
+import { MessagesPage } from '../../features/messaging/pages/MessagesPage'
 
 export const router = createBrowserRouter([
   {
@@ -71,6 +72,10 @@ export const router = createBrowserRouter([
       {
         element: <RequireAuth />,
         children: [
+          {
+            element: <RequireRole allowedRoles={['STUDENT', 'COMPANY_SUPERVISOR', 'ACADEMIC_COORDINATOR']} />,
+            children: [{ element: <ProfileLayout />, children: [{ path: 'messages', element: <MessagesPage /> }, { path: 'messages/conversations/:conversationId', element: <MessagesPage /> }] }],
+          },
           {
             path: 'session',
             element: <SessionPage />,
