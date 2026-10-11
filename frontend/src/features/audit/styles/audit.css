@@ -1,0 +1,8 @@
+.admin-audit { min-width: 0; }
+.audit-filters { align-items: end; }
+.audit-filters .form-field { min-width: 0; }
+.audit-filters input, .audit-filters select { width: 100%; min-width: 0; }
+.audit-filter-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+.admin-audit td { overflow-wrap: anywhere; max-width: 300px; }
+.admin-audit td small { display: block; margin-top: 5px; color: var(--color-text-secondary); font-size: 14px; }
+.admin-audit td div + div { margin-top: 6px; }

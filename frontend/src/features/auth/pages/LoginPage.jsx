@@ -1,3 +1,4 @@
+import { Wordmark } from '../../../app/components/Wordmark'
 import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useAuth } from '../hooks/useAuth'
@@ -101,7 +102,7 @@ export function LoginPage() {
   return (
     <main className="auth-shell">
       <section className="auth-card" aria-labelledby="login-heading">
-        <div className="auth-brand">InternFlow</div>
+        <div className="auth-brand"><Wordmark /></div>
         <h1 id="login-heading">Kyçu në llogarinë tënde</h1>
         <p className="auth-intro">
           Përdor email-in dhe fjalëkalimin e llogarisë InternFlow.

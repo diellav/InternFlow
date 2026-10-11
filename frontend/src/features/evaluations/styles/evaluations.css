@@ -4,7 +4,24 @@
 .evaluation-ratings { display: grid; gap: 1rem; }
 .evaluation-ratings div { display: flex; justify-content: space-between; gap: 1rem; }
 .evaluation-ratings dd { margin: 0; flex-shrink: 0; }
-.evaluation-comments { white-space: pre-wrap; }
+.evaluation-ratings div { padding-bottom: 12px; border-bottom: 1px solid var(--color-border); }
+.evaluation-ratings dt { color: var(--color-text-secondary); font-size: 15px; }
+.evaluation-ratings dd { color: var(--color-teal); font-size: 16px; font-weight: 650; }
+.evaluation-comments { white-space: pre-wrap; font-size: 16px; line-height: 1.8; }
+.evaluation-feature h3 { font-size: 20px; }
+.evaluation-feature .internship-panel > p:not(.evaluation-comments):not(.internship-help) { font-size: 15px; color: var(--color-text-secondary); }
 .evaluation-feature select, .evaluation-feature textarea { min-width: 0; max-width: 100%; }
 @media (max-width: 640px) { .evaluation-grid { grid-template-columns: minmax(0, 1fr); } }
 @media (max-width: 320px) { body:has(.evaluation-feature) { min-width: 0; } }
+
+.evaluation-feature > .admin-page-heading { padding: 24px; border: 1px solid var(--color-border); border-radius: 18px; background: var(--color-surface-soft); }
+.evaluation-feature .internship-panel, .internship-panel.evaluation-feature { border-radius: 16px; }
+.evaluation-feature :is(h2, h3) { font-family: var(--font-heading); font-weight: 600; }
+.evaluation-feature .evaluation-eligibility { background: var(--color-surface-soft); border-left: 4px solid var(--color-accent); }
+.evaluation-feature .internship-panel:has(.evaluation-ratings), .internship-panel.evaluation-feature:has(.evaluation-ratings) { border-top: 4px solid var(--color-teal); }
+.evaluation-grid > .form-field { padding: 16px; border: 1px solid var(--color-border); border-radius: 12px; background: var(--color-surface-soft); }
+.evaluation-ratings div { padding: 14px 16px; border: 1px solid var(--color-border); border-radius: 10px; background: var(--color-surface-soft); }
+.evaluation-comments { padding: 18px; border-left: 3px solid var(--color-teal); border-radius: 10px; background: var(--color-surface-soft); }
+.evaluation-feature .admin-dialog { background: var(--color-surface); border-color: var(--color-border); }
+.evaluation-feature :is(a, button, input, select, textarea):focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; }
+@media (max-width: 640px) { .evaluation-feature > .admin-page-heading { padding: 18px; } .evaluation-grid > .form-field, .evaluation-ratings div { padding: 12px; } }

@@ -1,3 +1,4 @@
+import { Wordmark } from '../../../app/components/Wordmark'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { normalizeApiError } from '../../../shared/api/apiError'
@@ -174,7 +175,7 @@ export function SupervisorRegistrationPage() {
   return (
     <main className="auth-shell">
       <section className="auth-card registration-card" aria-labelledby="supervisor-registration-heading">
-        <div className="auth-brand">InternFlow</div>
+        <div className="auth-brand"><Wordmark /></div>
         <h1 id="supervisor-registration-heading">Regjistrimi i mbikëqyrësit</h1>
         <p className="auth-intro">Krijoni llogarinë dhe lidhni kompaninë tuaj me InternFlow.</p>
         {formError ? <div className="form-alert" role="alert" tabIndex="-1" ref={errorRef}>{formError}</div> : null}

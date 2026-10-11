@@ -1,3 +1,4 @@
+import { Wordmark } from '../../../app/components/Wordmark'
 import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, Outlet } from 'react-router-dom'
 import { AdminLayout } from '../../../app/layouts/AdminLayout'
@@ -33,7 +34,7 @@ export function ProfileLayout() {
 
   return <div className={`profile-shell${user.role === 'COMPANY_SUPERVISOR' ? ' supervisor-profile-shell' : ''}`}>
     <header className="profile-topbar">
-      <Link to="/session" className="profile-brand">InternFlow</Link>
+      <Link to="/session" className="profile-brand"><Wordmark /></Link>
       <nav aria-label="Navigimi i llogarisë">
         <NavLink to="/session">Llogaria ime</NavLink>
         <NavLink to="/profile">Profili</NavLink>

@@ -37,6 +37,17 @@ beforeEach(() => {
 })
 afterEach(() => { routers.splice(0).forEach((memory) => memory.dispose()); configure({ asyncUtilTimeout: 1000 }) })
 
+it.each([
+  ['APPROVED', 'E miratuar'], ['ACTIVE', 'Aktive'], ['COMPLETED', 'E përfunduar'], ['UNDER_REVIEW', 'Në shqyrtim'],
+])('localizes %s in the monitoring list without changing its status value', async (status, label) => {
+  const record = { ...parent, status }
+  listMonitoringInternships.mockResolvedValue({ data: [record], meta })
+  page()
+  expect(await screen.findByText(`${label} · ${record.start_date} — ${record.end_date}`)).toBeInTheDocument()
+  expect(screen.queryByText(`${status} · ${record.start_date} — ${record.end_date}`)).not.toBeInTheDocument()
+  expect(record.status).toBe(status)
+})
+
 it('adds monitoring navigation without replacing the review inbox and shows assigned internship information', async () => {
   page()
   expect(screen.getByRole('link', { name: 'Aplikimet për praktikë', exact: true })).toHaveAttribute('href', '/coordinator/internships')

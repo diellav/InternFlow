@@ -33,7 +33,7 @@ afterEach(() => { routers.splice(0).forEach((memoryRouter) => memoryRouter.dispo
 describe('Admin area', () => {
   it('protects actual Admin routes and admits an Admin', async () => {
     const memoryRouter = renderPage('/admin', { ...student, role: 'STUDENT' })
-    await waitFor(() => expect(memoryRouter.state.location.pathname).toBe('/session'))
+    await waitFor(() => expect(memoryRouter.state.location.pathname).toBe('/student/internships'))
     expect(screen.queryByText('Llogaritë e sistemit')).not.toBeInTheDocument()
   })
 

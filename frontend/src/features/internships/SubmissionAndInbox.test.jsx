@@ -157,7 +157,7 @@ it('handles inbox loading, retry, empty state and assigned-only cards', async ()
 
 it('guards coordinator routes from students', async () => {
   const memoryRouter = renderPage('/coordinator/internships', student)
-  await waitFor(() => expect(memoryRouter.state.location.pathname).toBe('/session'))
+  await waitFor(() => expect(memoryRouter.state.location.pathname).toBe('/student/internships'))
   expect(listCoordinatorInternships).not.toHaveBeenCalled()
 })
 

@@ -7,6 +7,7 @@ use App\Models\Internship;
 use App\Models\StudentProfile;
 use App\Models\User;
 use App\Shared\Enums\UserRole;
+use App\Shared\Services\AuditService;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -64,6 +65,7 @@ class StudentActivityService
             abort_unless($internship->status === 'ACTIVE', 409, 'Only active internship activities can be edited.');
             $activity = $activityId === null ? new ActivityLog(['internship_id' => $internship->id])
                 : ActivityLog::where('internship_id', $internship->id)->lockForUpdate()->findOrFail($activityId);
+            $previousHours = $activity->hours;
             $activity->fill(Arr::only($data, ['activity_date', 'title', 'description', 'hours']));
             Validator::make([
                 'activity_date' => $activity->activity_date?->format('Y-m-d'),
@@ -83,6 +85,9 @@ class StudentActivityService
                 }
             }
             $activity->save();
+            if ($activity->wasRecentlyCreated || $activity->wasChanged(['activity_date', 'title', 'description', 'hours'])) {
+                app(AuditService::class)->record($user, $activityId === null ? 'activity.created' : 'activity.updated', $activity->id, $activityId === null ? [] : ['hours' => $previousHours], ['hours' => $activity->hours]);
+            }
 
             return $activity->setRelation('internship', $internship);
         });

@@ -1,4 +1,14 @@
 @import '../../activities/styles/activities.css';
 .monitoring-feature { min-width: 0; }
+.coordinator-shell .monitoring-feature .internship-panel { border-radius: 16px; }
+.coordinator-shell .monitoring-feature .internship-panel > h2 { font-family: var(--font-heading); font-weight: 600; font-size: 22px; }
+.coordinator-shell .monitoring-feature .activity-summary { background: var(--color-surface-soft); border-left: 4px solid var(--color-teal); }
+.coordinator-shell .monitoring-feature .internship-help { background: #f0e1d3; }
+.coordinator-shell .monitoring-feature .internship-card { border-left: 7px solid var(--color-teal); border-radius: 16px; box-shadow: var(--shadow-card); }
+.coordinator-shell .monitoring-feature .internship-card h2 { font-family: var(--font-heading); font-size: 23px; font-weight: 600; }
+.coordinator-shell .monitoring-feature .internship-card > p { font-size: 15px; color: var(--color-text-secondary); line-height: 1.7; }
+.coordinator-shell .monitoring-feature > .admin-page-heading { position: relative; isolation: isolate; padding: 24px; border: 1px solid var(--color-border); border-radius: 18px; background: var(--color-surface-soft); }
+@media (max-width: 600px) { .coordinator-shell .monitoring-feature > .admin-page-heading { padding: 18px; } .coordinator-shell .monitoring-feature .internship-card h2 { font-size: 21px; } }
+.coordinator-shell .monitoring-feature :is(a, button, input, select, textarea):focus-visible { outline: 3px solid var(--color-focus); outline-offset: 3px; }
 .monitoring-feature h1, .monitoring-feature h2, .monitoring-feature h3, .monitoring-feature p, .monitoring-feature a, .monitoring-feature dd { overflow-wrap: anywhere; }
 @media (max-width: 320px) { body:has(.monitoring-feature) { min-width: 0; } }

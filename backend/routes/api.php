@@ -2,6 +2,7 @@
 
 use App\Modules\Activity\Controllers\StudentActivityController;
 use App\Modules\Activity\Controllers\SupervisorActivityController;
+use App\Modules\Audit\Controllers\AdminAuditLogController;
 use App\Modules\Auth\Controllers\AuthController;
 use App\Modules\Auth\Controllers\RegistrationController;
 use App\Modules\Company\Controllers\AdminCompanyController;
@@ -78,6 +79,7 @@ Route::prefix('supervisor/verification-application')->middleware(['auth:sanctum'
 });
 
 Route::prefix('admin')->name('admin.')->middleware(['auth:sanctum', 'active', 'role:ADMIN'])->group(function (): void {
+    Route::get('/audit-logs', [AdminAuditLogController::class, 'index'])->name('audit-logs.index');
     Route::get('/internships/statistics', [AdminInternshipController::class, 'statistics'])->name('internships.statistics');
     Route::get('/internships', [AdminInternshipController::class, 'index'])->name('internships.index');
     Route::get('/internships/{internship}', [AdminInternshipController::class, 'show'])->whereNumber('internship')->name('internships.show');

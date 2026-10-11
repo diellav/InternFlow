@@ -213,7 +213,7 @@ it('handles inaccessible records and operational denial while keeping verificati
 
 it('guards supervisor routes from other roles and guests', async () => {
   const memoryRouter = renderPage('/supervisor/internships', student)
-  await waitFor(() => expect(memoryRouter.state.location.pathname).toBe('/session'))
+  await waitFor(() => expect(memoryRouter.state.location.pathname).toBe('/student/internships'))
   expect(listSupervisorInternships).not.toHaveBeenCalled()
 })
 

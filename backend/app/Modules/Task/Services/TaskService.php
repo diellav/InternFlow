@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Modules\Internship\Services\StudentInternshipService;
 use App\Modules\Internship\Services\SupervisorInternshipService;
 use App\Modules\Notification\Services\NotificationDispatchService;
+use App\Shared\Services\AuditService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
@@ -67,6 +68,9 @@ class TaskService
                 : Task::query()->where('internship_id', $internship->id)->lockForUpdate()->findOrFail($id);
             abort_unless($task->status === 'ASSIGNED' && ! $task->submissions()->exists(), 409, 'This task is no longer editable.');
             $task->fill(Arr::only($data, ['title', 'description', 'priority', 'due_date']))->save();
+            if ($task->wasRecentlyCreated || $task->wasChanged(['title', 'description', 'priority', 'due_date'])) {
+                app(AuditService::class)->record($actor, $id === null ? 'task.created' : 'task.updated', $task->id, [], ['status' => $task->status]);
+            }
             if ($id === null) {
                 app(NotificationDispatchService::class)->taskAssigned($internship, $task);
             }

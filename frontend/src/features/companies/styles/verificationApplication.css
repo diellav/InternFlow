@@ -6,8 +6,8 @@
 .verification-application-section .profile-fields { margin-top: 20px; }
 .verification-application-section dd, .verification-reason p { overflow-wrap: anywhere; white-space: pre-wrap; }
 .verification-application-section .profile-role-details > div { padding: 12px 0; border-bottom: 1px solid #eef0f5; }
-.verification-application-section dt { font-size: 12px; color: #5c687d; margin-bottom: 6px; }
-.verification-application-section dd { margin: 0; font-size: 14px; color: #263249; }
+.verification-application-section dt { font-size: 12px; color: var(--color-text-secondary); margin-bottom: 6px; }
+.verification-application-section dd { margin: 0; font-size: 14px; color: var(--color-text); }
 .verification-reason { margin-top: 16px; padding: 16px; border-radius: 10px; background: #fff5f3; }
 .verification-reason h3 { font-size: 14px; margin-top: 0; }
 .verification-application-dialog { width: min(520px, calc(100% - 32px)); box-sizing: border-box; border: 0; border-radius: 16px; padding: 24px; max-height: calc(100dvh - 32px); overflow-y: auto; }

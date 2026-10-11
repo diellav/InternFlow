@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Modules\User\Services\ProfileService;
 use App\Shared\Enums\UserRole;
 use App\Shared\Enums\VerificationStatus;
+use App\Shared\Services\AuditService;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -57,10 +58,17 @@ class VerificationApplicationService
                 $this->validateCompanyDuplicates(array_replace($company->only(['name', 'website']), $data['company']), $company);
             }
             if (isset($data['supervisor'])) {
-                $this->profiles->update($user, $data['supervisor']);
+                $previousSupervisor = [...$user->only(['first_name', 'last_name', 'phone']), 'job_title' => $profile->job_title];
+                $updated = $this->profiles->update($user, $data['supervisor']);
+                if ($previousSupervisor !== [...$updated->only(['first_name', 'last_name', 'phone']), 'job_title' => $updated->companySupervisorProfile?->job_title]) {
+                    app(AuditService::class)->record($user, 'supervisor.application_updated', $profile->user_id, [], []);
+                }
             }
             if (isset($data['company'])) {
                 $company->fill($data['company'])->save();
+                if ($company->wasChanged(['name', 'industry', 'address', 'email', 'phone', 'website'])) {
+                    app(AuditService::class)->record($user, 'company.application_updated', $company->id, [], []);
+                }
             }
         });
     }
@@ -87,9 +95,11 @@ class VerificationApplicationService
             }
             if (in_array('supervisor', $targets, true)) {
                 $profile->forceFill(['verification_status' => VerificationStatus::PENDING, 'reviewed_by' => null, 'reviewed_at' => null, 'review_comment' => null])->save();
+                app(AuditService::class)->record($user, 'supervisor.resubmitted', $profile->user_id, ['status' => 'REJECTED'], ['status' => 'PENDING']);
             }
             if (in_array('company', $targets, true)) {
                 $company->forceFill(['verification_status' => VerificationStatus::PENDING, 'verified_by' => null, 'verified_at' => null, 'verification_note' => null])->save();
+                app(AuditService::class)->record($user, 'company.resubmitted', $company->id, ['status' => 'REJECTED'], ['status' => 'PENDING']);
             }
         });
     }

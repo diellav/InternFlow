@@ -76,7 +76,8 @@ it('does not invent zero statistics on failure and supports retry', async () => 
 })
 it.each(['STUDENT', 'COMPANY_SUPERVISOR', 'ACADEMIC_COORDINATOR'])('denies the actual admin routes to %s', async role => {
   const memory = page('/admin/internships/12', { ...admin, role })
-  await waitFor(() => expect(memory.state.location.pathname).toBe('/session'))
+  const landing = { STUDENT: '/student/internships', COMPANY_SUPERVISOR: '/supervisor/internships', ACADEMIC_COORDINATOR: '/coordinator/internships' }[role]
+  await waitFor(() => expect(memory.state.location.pathname).toBe(landing))
   expect(api.getAdminInternship).not.toHaveBeenCalled()
   expect(api.listAdminInternships).not.toHaveBeenCalled()
 })

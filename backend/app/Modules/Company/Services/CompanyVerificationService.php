@@ -5,6 +5,7 @@ namespace App\Modules\Company\Services;
 use App\Models\Company;
 use App\Models\User;
 use App\Shared\Enums\VerificationStatus;
+use App\Shared\Services\AuditService;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -24,6 +25,7 @@ class CompanyVerificationService
             $current->verified_at = now();
             $current->verification_note = $decision === VerificationStatus::REJECTED ? $reason : null;
             $current->save();
+            app(AuditService::class)->record($admin, 'company.'.strtolower($decision->value), $current->id, ['status' => 'PENDING'], ['status' => $decision->value]);
 
             return $current;
         });

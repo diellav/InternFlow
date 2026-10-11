@@ -11,6 +11,7 @@ use App\Models\User;
 use App\Modules\Notification\Services\NotificationDispatchService;
 use App\Shared\Enums\UserRole;
 use App\Shared\Enums\VerificationStatus;
+use App\Shared\Services\AuditService;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -79,6 +80,7 @@ class SupervisorEvaluationService
             Validator::make($values, [...$rules, 'comments' => ['required', 'string', 'min:20', 'max:10000']])->validate();
             $timestamp = now()->toIso8601String();
             DB::table('final_evaluations')->where('id', $evaluation->id)->update(['submitted_at' => $timestamp]);
+            app(AuditService::class)->record($actor, 'evaluation.submitted', $evaluation->id, ['submitted' => false], ['submitted' => true]);
             app(NotificationDispatchService::class)->finalEvaluationSubmitted($parent);
 
             return $parent->setRelation('finalEvaluation', $evaluation->refresh());

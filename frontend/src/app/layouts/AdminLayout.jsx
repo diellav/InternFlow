@@ -1,3 +1,4 @@
+import { Wordmark } from '../components/Wordmark'
 import { useState } from 'react'
 import { NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../features/auth/hooks/useAuth'
@@ -25,7 +26,7 @@ export function AdminLayout() {
 
   return <div className="admin-shell">
     <aside className={`admin-sidebar ${mobileOpen ? 'mobile-open' : ''}`} id="admin-navigation">
-      <NavLink to="/admin" className="admin-brand" onClick={() => setMobileOpen(false)}><span className="brand-mark" aria-hidden="true">IF</span>InternFlow</NavLink>
+      <NavLink to="/admin" className="admin-brand" onClick={() => setMobileOpen(false)}><Wordmark /></NavLink>
       <p className="sidebar-caption">Hapësira e administrimit</p>
       <nav aria-label="Navigimi i administratorit">
         <NavLink to="/admin" end onClick={() => setMobileOpen(false)}><span aria-hidden="true">01</span>Përmbledhja</NavLink>
@@ -35,6 +36,7 @@ export function AdminLayout() {
         <NavLink to="/profile" onClick={() => setMobileOpen(false)}><span aria-hidden="true">05</span>Profili im</NavLink>
         <NavLink to="/admin/supervisors" onClick={() => setMobileOpen(false)}><span aria-hidden="true">06</span>Mbikëqyrësit</NavLink>
         <NavLink to="/admin/internships" onClick={() => setMobileOpen(false)}><span aria-hidden="true">07</span>Praktikat</NavLink>
+        <NavLink to="/admin/audit-logs" onClick={() => setMobileOpen(false)}><span aria-hidden="true">08</span>Historiku i veprimeve</NavLink>
       </nav>
       <div className="sidebar-footer"><p>Praktika të organizuara.<br />Qasje të qarta.</p><span>InternFlow · Administrimi</span></div>
     </aside>

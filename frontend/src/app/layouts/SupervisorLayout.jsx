@@ -1,3 +1,4 @@
+import { Wordmark } from '../components/Wordmark'
 import { useRef, useState } from 'react'
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../features/auth/hooks/useAuth'
@@ -20,5 +21,5 @@ export function SupervisorLayout() {
     try { await logout(); navigate('/login', { replace: true }) }
     catch { setError('Dalja nuk u krye. Provoni përsëri.'); pending.current = false; setBusy(false) }
   }
-  return <div className="student-shell supervisor-shell"><header className="student-header"><Link className="student-brand" to="/supervisor/internships"><span aria-hidden="true">IF</span>InternFlow</Link><nav aria-label="Navigimi i mbikëqyrësit"><NavLink to="/supervisor/internships">Praktikat e caktuara</NavLink><MessagesNavigation /><NavLink to="/supervisor/verification">Verifikimi</NavLink><NavLink to="/profile">Profili</NavLink><NavLink to="/session">Llogaria ime</NavLink></nav><div className="student-account"><span>{user.first_name} {user.last_name}<small>Mbikëqyrës kompanie</small></span><NotificationBell /><button className="admin-button" disabled={busy} onClick={exit}>{busy ? 'Duke dalë…' : 'Dil'}</button></div></header><main className="student-main">{error && <p className="form-alert" role="alert">{error}</p>}<Outlet /></main><footer className="student-footer">InternFlow · Mbikëqyrja e praktikës profesionale</footer></div>
+  return <div className="student-shell supervisor-shell"><header className="student-header"><Link className="student-brand" to="/supervisor/internships"><Wordmark /></Link><nav aria-label="Navigimi i mbikëqyrësit"><NavLink to="/supervisor/internships">Praktikat e caktuara</NavLink><MessagesNavigation /><NavLink to="/supervisor/verification">Verifikimi</NavLink><NavLink to="/profile">Profili</NavLink><NavLink to="/session">Llogaria ime</NavLink></nav><div className="student-account"><span>{user.first_name} {user.last_name}<small>Mbikëqyrës kompanie</small></span><NotificationBell /><button className="admin-button" disabled={busy} onClick={exit}>{busy ? 'Duke dalë…' : 'Dil'}</button></div></header><main className="student-main">{error && <p className="form-alert" role="alert">{error}</p>}<Outlet /></main><footer className="student-footer">InternFlow · Mbikëqyrja e praktikës profesionale</footer></div>
 }

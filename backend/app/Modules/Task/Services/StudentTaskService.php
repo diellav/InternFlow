@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Modules\Notification\Services\NotificationDispatchService;
 use App\Shared\Enums\TaskStatus;
 use App\Shared\Enums\UserRole;
+use App\Shared\Services\AuditService;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -51,6 +52,7 @@ class StudentTaskService
                 $internship = Internship::where('student_id', $user->id)->lockForUpdate()->findOrFail($parentId);
                 abort_unless($internship->status === 'ACTIVE', 409, 'The internship is no longer active.');
                 $task = Task::where('internship_id', $internship->id)->lockForUpdate()->findOrFail($id);
+                $previousStatus = $task->status;
                 $version = 1;
                 if ($resubmit) {
                     abort_unless($task->status === TaskStatus::REVISION_REQUIRED->value, 409, 'This task is no longer awaiting corrections.');
@@ -68,8 +70,10 @@ class StudentTaskService
                         'resource_url' => $submission['resource_url'] ?? null, 'submitted_at' => now(),
                     ]);
                     $record->files()->createMany($files);
+                    app(AuditService::class)->record($user, 'submission.created', $record->id, [], ['version_no' => $version]);
                 }
                 $task->forceFill(['status' => $submission === null ? 'IN_PROGRESS' : 'SUBMITTED'])->save();
+                app(AuditService::class)->record($user, $submission === null ? 'task.started' : 'task.submitted', $task->id, ['status' => $previousStatus], ['status' => $task->status]);
                 if ($submission !== null) {
                     app(NotificationDispatchService::class)->taskSubmitted($internship, $task);
                 }

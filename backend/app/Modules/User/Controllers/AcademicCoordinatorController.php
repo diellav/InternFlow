@@ -16,11 +16,11 @@ class AcademicCoordinatorController extends Controller
 
     public function store(CreateCoordinatorRequest $request): JsonResponse
     {
-        return (new UserDetailResource($this->coordinators->create($request->validated())))->response()->setStatusCode(201);
+        return (new UserDetailResource($this->coordinators->create($request->validated(), $request->user())))->response()->setStatusCode(201);
     }
 
     public function update(UpdateCoordinatorRequest $request, User $user): UserDetailResource
     {
-        return new UserDetailResource($this->coordinators->update($user, $request->validated()));
+        return new UserDetailResource($this->coordinators->update($user, $request->validated(), $request->user()));
     }
 }

@@ -6,6 +6,7 @@ use App\Models\CompanySupervisorProfile;
 use App\Models\User;
 use App\Shared\Enums\UserRole;
 use App\Shared\Enums\VerificationStatus;
+use App\Shared\Services\AuditService;
 use Illuminate\Support\Facades\DB;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -30,6 +31,7 @@ class SupervisorVerificationService
             $profile->reviewed_at = now();
             $profile->review_comment = $decision === VerificationStatus::REJECTED ? $reason : null;
             $profile->save();
+            app(AuditService::class)->record($admin, 'supervisor.'.strtolower($decision->value), $profile->user_id, ['status' => 'PENDING'], ['status' => $decision->value]);
 
             return $current;
         });

@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Modules\Notification\Services\NotificationDispatchService;
 use App\Shared\Enums\InternshipStatus;
 use App\Shared\Enums\UserRole;
+use App\Shared\Services\AuditService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
@@ -67,6 +68,8 @@ class CoordinatorInternshipService
             abort_unless($internship->status === 'SUBMITTED' && $internship->coordinator_id === null, 409, 'This application is no longer available to claim.');
             $internship->forceFill(['coordinator_id' => $user->id])->save();
 
+            app(AuditService::class)->record($user, 'internship.claimed', $internship->id, ['coordinator_id' => null], ['coordinator_id' => $user->id]);
+
             return $internship->load($this->relations);
         });
     }
@@ -94,6 +97,8 @@ class CoordinatorInternshipService
             abort_unless($internship->status === InternshipStatus::SUBMITTED->value, 409, 'Only an assigned submitted application can enter review.');
             $internship->forceFill(['status' => InternshipStatus::UNDER_REVIEW->value])->save();
 
+            app(AuditService::class)->record($actor, 'internship.review_started', $internship->id, ['status' => 'SUBMITTED'], ['status' => 'UNDER_REVIEW']);
+
             return $internship->load($this->relations);
         });
     }
@@ -117,6 +122,7 @@ class CoordinatorInternshipService
                 'approved_at' => $decision === InternshipStatus::APPROVED->value ? now() : null,
                 'decision_comment' => $decision === InternshipStatus::APPROVED->value ? null : $comment,
             ])->save();
+            app(AuditService::class)->record($actor, 'internship.'.strtolower($decision), $internship->id, ['status' => 'UNDER_REVIEW'], ['status' => $decision]);
             app(NotificationDispatchService::class)->applicationDecided($internship);
 
             return $internship->load($this->relations);

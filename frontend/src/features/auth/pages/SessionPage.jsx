@@ -1,5 +1,6 @@
+import { Wordmark } from '../../../app/components/Wordmark'
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
 import { USER_ROLES, VERIFICATION_STATUSES } from '../constants/authConstants'
 import { useAuth } from '../hooks/useAuth'
 import { NotificationBell } from '../../notifications/components/NotificationBell'
@@ -36,10 +37,19 @@ export function SessionPage() {
     }
   }
 
+  const landing = {
+    [USER_ROLES.STUDENT]: '/student/internships',
+    [USER_ROLES.ACADEMIC_COORDINATOR]: '/coordinator/internships',
+    [USER_ROLES.COMPANY_SUPERVISOR]: '/supervisor/internships',
+    [USER_ROLES.ADMIN]: '/admin',
+  }[user.role]
+
+  if (landing) return <Navigate to={landing} replace />
+
   return (
     <main className="auth-shell">
       <section className="auth-card session-card" aria-labelledby="session-heading">
-        <div className="notification-session-heading"><p className="auth-brand">InternFlow</p><NotificationBell /></div>
+        <div className="notification-session-heading"><p className="auth-brand"><Wordmark /></p><NotificationBell /></div>
         <p className="session-label">Sesioni i autentikuar</p>
         <h1 id="session-heading">
           {user.first_name} {user.last_name}

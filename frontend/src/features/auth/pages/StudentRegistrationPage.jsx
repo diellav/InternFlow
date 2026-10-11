@@ -1,3 +1,4 @@
+import { Wordmark } from '../../../app/components/Wordmark'
 import { useEffect, useRef, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { normalizeApiError } from '../../../shared/api/apiError'
@@ -162,7 +163,7 @@ export function StudentRegistrationPage() {
   return (
     <main className="auth-shell">
       <section className="auth-card registration-card" aria-labelledby="registration-heading">
-        <div className="auth-brand">InternFlow</div>
+        <div className="auth-brand"><Wordmark /></div>
         <h1 id="registration-heading">Krijo llogari studenti</h1>
         <p className="auth-intro">Plotëso të dhënat për t’u regjistruar në InternFlow.</p>
 

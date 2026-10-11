@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Modules\Internship\Services\SupervisorInternshipService;
 use App\Modules\Notification\Services\NotificationDispatchService;
 use App\Shared\Enums\TaskStatus;
+use App\Shared\Services\AuditService;
 use Illuminate\Support\Facades\DB;
 
 class TaskReviewService
@@ -25,6 +26,7 @@ class TaskReviewService
             $decision = TaskStatus::from($data['decision']);
             $submission->feedback()->create(['supervisor_id' => $actor->id, 'decision' => $decision->value, 'comment' => $data['comment'] ?? null]);
             $task->forceFill(['status' => $decision->value])->save();
+            app(AuditService::class)->record($actor, 'task.'.strtolower($decision->value), $task->id, ['status' => 'SUBMITTED'], ['status' => $decision->value]);
             app(NotificationDispatchService::class)->taskReviewed($internship, $task);
 
             return $tasks->details($actor, $id);

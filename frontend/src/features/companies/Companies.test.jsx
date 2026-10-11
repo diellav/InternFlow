@@ -78,7 +78,7 @@ describe('Admin companies', () => {
 
   it('protects the company routes from non-Admins', async () => {
     const memoryRouter = renderPage('/admin/companies', { ...admin, role: 'STUDENT' })
-    await waitFor(() => expect(memoryRouter.state.location.pathname).toBe('/session'))
+    await waitFor(() => expect(memoryRouter.state.location.pathname).toBe('/student/internships'))
     expect(listCompanies).not.toHaveBeenCalled()
   })
 })

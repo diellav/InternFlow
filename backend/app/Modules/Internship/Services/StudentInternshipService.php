@@ -12,6 +12,7 @@ use App\Modules\Notification\Services\NotificationDispatchService;
 use App\Shared\Enums\InternshipStatus;
 use App\Shared\Enums\UserRole;
 use App\Shared\Enums\VerificationStatus;
+use App\Shared\Services\AuditService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Arr;
@@ -76,6 +77,7 @@ class StudentInternshipService
             abort_unless($internship->status === InternshipStatus::DRAFT->value, 409, 'Only a draft can be submitted.');
             $this->eligibility->validateCompleted($internship);
             $internship->forceFill(['status' => InternshipStatus::SUBMITTED->value, 'submitted_at' => now(), 'coordinator_id' => null])->save();
+            app(AuditService::class)->record($user, 'internship.submitted', $internship->id, ['status' => 'DRAFT'], ['status' => 'SUBMITTED']);
             app(NotificationDispatchService::class)->applicationSubmitted($internship);
 
             return $internship->load($this->relations);
@@ -93,6 +95,7 @@ class StudentInternshipService
             abort_unless(AcademicCoordinatorProfile::query()->sharedLock()->find($internship->coordinator_id) !== null, 422, 'An assigned academic coordinator is required.');
             $this->eligibility->validateCompleted($internship);
             $internship->forceFill(['status' => InternshipStatus::SUBMITTED->value, 'submitted_at' => now(), 'decision_comment' => null, 'approved_at' => null])->save();
+            app(AuditService::class)->record($user, 'internship.resubmitted', $internship->id, ['status' => 'REVISION_REQUIRED'], ['status' => 'SUBMITTED']);
             app(NotificationDispatchService::class)->applicationSubmitted($internship);
 
             return $internship->load($this->relations);

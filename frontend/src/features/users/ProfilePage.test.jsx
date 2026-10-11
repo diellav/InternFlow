@@ -60,9 +60,8 @@ describe('self-service profile', () => {
     expect(refreshUser).not.toHaveBeenCalled()
   })
 
-  it('resets unsaved changes and provides reachable navigation from the existing session page', async () => {
-    const memoryRouter = renderProfile('/session')
-    fireEvent.click(screen.getByRole('link', { name: 'Profili im' }))
+  it('resets unsaved changes and preserves profile navigation', async () => {
+    const memoryRouter = renderProfile('/profile')
     expect(memoryRouter.state.location.pathname).toBe('/profile')
     fireEvent.change(await screen.findByLabelText('Emri *'), { target: { value: 'Draft' } })
     fireEvent.click(screen.getByRole('button', { name: 'Anulo ndryshimet' }))

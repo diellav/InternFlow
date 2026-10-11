@@ -1,3 +1,4 @@
+import { Wordmark } from '../components/Wordmark'
 import { useState } from 'react'
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../features/auth/hooks/useAuth'
@@ -21,7 +22,7 @@ export function StudentLayout() {
 
   return <div className="student-shell">
     <header className="student-header">
-      <Link className="student-brand" to="/student/internships"><span aria-hidden="true">IF</span>InternFlow</Link>
+      <Link className="student-brand" to="/student/internships"><Wordmark /></Link>
       <nav aria-label="Navigimi i studentit"><NavLink to="/student/internships">Praktikat e mia</NavLink><NavLink to="/student/activities">Aktivitetet e mia</NavLink><MessagesNavigation /><NavLink to="/profile">Profili</NavLink><NavLink to="/session">Llogaria</NavLink></nav>
       <div className="student-account"><span>{user.first_name} {user.last_name}<small>Student</small></span><NotificationBell /><button className="admin-button" disabled={busy} onClick={exit}>{busy ? 'Duke dalë…' : 'Dil'}</button></div>
     </header>

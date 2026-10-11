@@ -31,6 +31,7 @@ import { SupervisorsPage } from '../../features/companies/pages/SupervisorsPage'
 import { SupervisorDetailsPage } from '../../features/companies/pages/SupervisorDetailsPage'
 import { VerificationApplicationPage } from '../../features/companies/pages/VerificationApplicationPage'
 import { AdminHomePage } from '../../features/users/pages/AdminHomePage'
+import { AdminAuditLogsPage } from '../../features/audit/pages/AdminAuditLogsPage'
 import { AdminInternshipsPage, AdminInternshipDetailsPage } from '../../features/internships/pages/AdminInternshipsPage'
 import { UsersPage } from '../../features/users/pages/UsersPage'
 import { UserDetailsPage } from '../../features/users/pages/UserDetailsPage'
@@ -138,6 +139,7 @@ export const router = createBrowserRouter([
               element: <AdminLayout />,
               children: [
                 { index: true, element: <AdminHomePage /> },
+                { path: 'audit-logs', element: <AdminAuditLogsPage /> },
                 { path: 'internships', element: <AdminInternshipsPage /> },
                 { path: 'internships/:id', element: <AdminInternshipDetailsPage /> },
                 { path: 'users', element: <UsersPage /> },

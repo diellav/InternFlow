@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Modules\Notification\Services\NotificationDispatchService;
 use App\Shared\Enums\UserRole;
 use App\Shared\Enums\VerificationStatus;
+use App\Shared\Services\AuditService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
@@ -95,6 +96,7 @@ class SupervisorInternshipService
                 throw ValidationException::withMessages(['internship' => [$reason]]);
             }
             $internship->forceFill(['status' => 'ACTIVE'])->save();
+            app(AuditService::class)->record($actor, 'internship.activated', $internship->id, ['status' => 'APPROVED'], ['status' => 'ACTIVE']);
             app(NotificationDispatchService::class)->internshipActivated($internship);
 
             return $internship;

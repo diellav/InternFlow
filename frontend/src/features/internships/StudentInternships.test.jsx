@@ -138,7 +138,7 @@ it('offers no placeholder company when lookups are empty and handles missing det
 
 it('guards internship routes from guests and non-students', async () => {
   const memoryRouter = renderPage('/student/internships', { ...student, role: 'COMPANY_SUPERVISOR' })
-  await waitFor(() => expect(memoryRouter.state.location.pathname).toBe('/session'))
+  await waitFor(() => expect(memoryRouter.state.location.pathname).toBe('/supervisor/internships'))
   expect(listInternships).not.toHaveBeenCalled()
 })
 

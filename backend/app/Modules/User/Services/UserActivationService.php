@@ -4,6 +4,7 @@ namespace App\Modules\User\Services;
 
 use App\Models\User;
 use App\Shared\Enums\UserRole;
+use App\Shared\Services\AuditService;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -42,8 +43,10 @@ class UserActivationService
             }
 
             if ($target->is_active !== $isActive) {
+                $previousActive = $target->is_active;
                 $target->is_active = $isActive;
                 $target->save();
+                app(AuditService::class)->record($currentActor, $isActive ? 'user.activated' : 'user.deactivated', $target->id, ['is_active' => $previousActive], ['is_active' => $isActive]);
             }
 
             return $target->load('role');
